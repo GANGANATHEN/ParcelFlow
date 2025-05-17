@@ -12,6 +12,7 @@ const Store = ({ search }) => {
     return jsonValue ? JSON.parse(jsonValue) : [];
   });
 
+  
   const { sharedState } = useStore();
 
   useEffect(() => {

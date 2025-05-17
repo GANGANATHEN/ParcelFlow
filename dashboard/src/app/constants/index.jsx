@@ -196,3 +196,10 @@ export const Orders =[
   },
  
 ]
+
+export const Navbar =[
+  {
+    notification:"notification",
+    profile:"profile"
+  }
+]

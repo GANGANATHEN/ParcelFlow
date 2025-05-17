@@ -1,17 +1,20 @@
 "use client";
 import { dashBoard, Orders } from "../../constants/index.jsx";
 import { useState } from "react";
+import Image from "next/image.js";
 // react icons start
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
 import { FaCircle } from "react-icons/fa";
+import { GoGift } from "react-icons/go";
+import { AiOutlineMessage } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
 // react icons start
 import "../../globals.css";
 
 export default function Dashboard() {
   const [activeView, setActiveView] = useState("month");
   const [arrowContol, setarrowContol] = useState(true);
-
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -81,7 +84,7 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
-            <div className="border-1 border-gray-200 p-5 rounded-sm">chart</div>
+            <div className="border-1 border-gray-200 p-5 rounded-sm bg-white">chart</div>
           </div>
           {/* Income Overview chart */}
           <div className="w-[30%] flex flex-col gap-y-5">
@@ -172,11 +175,111 @@ export default function Dashboard() {
           {/* Transaction History box */}
           <div className="w-[30%] flex flex-col gap-y-5">
             <div className="font-bold">Transaction History</div>
-            <div className="border-1 border-gray-200 p-5 rounded-sm">
-              content
+            <div className="text-[14px] flex flex-col border-1 border-gray-100 bg-white shadow-sm rounded-lg">
+              <div className="flex items-center gap-x-5 p-3 cursor-pointer border-t-1 border-gray-100 hover:bg-gray-100">
+                <div className="w-[10%] text-center flex justify-center">
+                  <p className="text-[16px] p-2 text-lime-500 rounded-[50%] border-0 bg-lime-50">
+                    <GoGift />
+                  </p>{" "}
+                </div>
+                <div className="w-[90%] flex justify-between gap-3">
+                  <p className="font-bold">
+                    Order #002434
+                    <span className="block text-zinc-400 text-[10px] font-normal">
+                      Today, 2:00 AM
+                    </span>
+                  </p>
+                  <p className="text-[12px] text-right font-bold">
+                    + $1,430
+                    <span className="block text-zinc-400 text-[10px] font-normal text-right">
+                      78%
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-x-5 p-3 border-t-1 cursor-pointer border-gray-100 hover:bg-gray-100">
+                <div className="w-[10%] text-center flex justify-center">
+                  <p className="text-[16px] p-2 bg-blue-50 text-blue-400 rounded-[50%]">
+                    <AiOutlineMessage />{" "}
+                  </p>
+                </div>
+                <div className="w-[90%] flex justify-between">
+                  <p className="font-bold">
+                    Order #984947
+                    <span className="block text-zinc-400 text-[10px] font-normal">
+                      5 August, 1:45 PM
+                    </span>
+                  </p>
+                  <p className="text-[12px] font-bold text-right">
+                    + $302
+                    <span className="block text-zinc-400 text-[10px] font-normal">
+                      8%
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-x-5 p-3 border-t-1 border-gray-100 cursor-pointer hover:bg-gray-100">
+                <div className="w-[10%] text-center flex justify-center">
+                  <p className="text-[16px] bg-red-50 text-red-500 p-2 rounded-[50%]">
+                    <IoSettingsOutline />
+                  </p>
+                </div>
+                <div className="w-[90%] flex justify-between">
+                  <p className="font-bold">
+                    Order #988784
+                    <span className="block text-zinc-400 text-[10px] font-normal">
+                      7 hours ago
+                    </span>
+                  </p>
+                  <p className="text-[12px] text-right font-bold">
+                    + $682
+                    <span className="block text-zinc-400 text-[10px] font-normal">
+                      16%
+                    </span>
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="border-1 border-gray-200 p-5 rounded-sm">
-              content
+            <div className="border-1 border-gray-200 p-5 flex flex-col gap-y-5 rounded-sm bg-white">
+              <div className="flex flex-col gap-y-1">
+                <p className="font-bold">
+                  Help & Support Chat{" "}
+                  <span className="block text-[12px] text-zinc-400 font-normal">
+                    Typical replay within 5 min
+                  </span>
+                </p>
+                <div className="relative flex items-center">
+                  <Image
+                    className="z-4 rounded-[50%] border-r-2 border-white"
+                    src={"/profile/1.png"}
+                    alt="1"
+                    width={35}
+                    height={35}
+                  />
+                  <Image
+                    className="z-3 absolute left-[13%] rounded-[50%] border-r-2 border-white"
+                    src={"/profile/2.png"}
+                    alt="2"
+                    width={35}
+                    height={35}
+                  />
+                  <Image
+                    className="z-2 absolute left-[25%] rounded-[50%] border-r-2 border-white"
+                    src={"/profile/3.png"}
+                    alt="3"
+                    width={35}
+                    height={35}
+                  />
+                  <Image
+                    className="z-1 absolute left-[38%] rounded-[50%] border-r-2 border-white"
+                    src={"/profile/4.png"}
+                    alt="4"
+                    width={35}
+                    height={35}
+                  />
+                </div>
+              </div>
+              <button className="bg-blue-500 text-white rounded-lg p-2 text-[12px] cursor-pointer hover:bg-blue-600 duration-200">Need Help?</button>
             </div>
           </div>
         </div>
