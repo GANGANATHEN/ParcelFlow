@@ -2,6 +2,8 @@
 import { dashBoard, Orders } from "../../constants/index.jsx";
 import { useState } from "react";
 import Image from "next/image.js";
+import Visitor from "./visitor.js";
+import Income from "./income.js";
 // react icons start
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
@@ -84,12 +86,18 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
-            <div className="border-1 border-gray-200 p-5 rounded-sm bg-white">chart</div>
+            <div className="border-1 border-gray-200 p-5 rounded-sm bg-white">
+              <Visitor />
+            </div>
           </div>
           {/* Income Overview chart */}
-          <div className="w-[30%] flex flex-col gap-y-5">
+          <div className="w-[30%] flex flex-col gap-y-5 bg-white ">
             <h1 className="font-bold">Income Overview</h1>
-            <div className="border-1 border-gray-200 p-5 rounded-sm">chart</div>
+            <div className="border-1 border-gray-200 p-5 rounded-sm w-full h-100 flex flex-col gap-y-4">
+              {/* <h1>This Week Statistics</h1> */}
+              <h1 className="font-bold text-[20px]">$7,650</h1>
+              <Income />
+            </div>
           </div>
         </div>
         {/* Recent Orders box */}
@@ -279,7 +287,9 @@ export default function Dashboard() {
                   />
                 </div>
               </div>
-              <button className="bg-blue-500 text-white rounded-lg p-2 text-[12px] cursor-pointer hover:bg-blue-600 duration-200">Need Help?</button>
+              <button className="bg-blue-500 text-white rounded-lg p-2 text-[12px] cursor-pointer hover:bg-blue-600 duration-200">
+                Need Help?
+              </button>
             </div>
           </div>
         </div>
