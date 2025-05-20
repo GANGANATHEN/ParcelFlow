@@ -34,7 +34,7 @@
            data: [80, 60, 100, 95, 88, 92, 87, 90, 85, 88, 93, 40],
            borderColor: 'rgba(0, 123, 255, 1)',
            backgroundColor: 'rgba(0, 123, 255, 0.1)',
-          //  tension: 0.4,
+           tension: 0.4,
            fill: true,
          },
          {

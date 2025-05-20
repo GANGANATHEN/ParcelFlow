@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image.js";
 import Visitor from "./visitor.js";
 import Income from "./income.js";
+import Report from "./report.js";
+import Sales from "./sales.js";
 // react icons start
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
@@ -16,7 +18,8 @@ import "../../globals.css";
 
 export default function Dashboard() {
   const [activeView, setActiveView] = useState("month");
-  const [arrowContol, setarrowContol] = useState(true);
+  const [arrowContol, setarrowContol] = useState(false);
+  const [sales, setSales] = useState("Today");
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -158,7 +161,9 @@ export default function Dashboard() {
           {/* Analytics Report box */}
           <div className="w-[30%] flex flex-col gap-y-5">
             <div className="font-bold">Analytics Report</div>
-            <div className="border-1 border-gray-200 p-5 rounded-sm">chart</div>
+            <div className="border-1 border-gray-200 p-5 rounded-sm">
+              <Report />
+            </div>
           </div>
         </div>
         {/* Sales Report box */}
@@ -166,18 +171,39 @@ export default function Dashboard() {
           <div className="w-[70%] flex flex-col gap-y-5">
             <div className="flex items-center justify-between">
               <h1 className="font-bold">Sales Report</h1>
-              <button
-                className="flex gap-x-3 items-center px-2 py-1 bg-gray-50 border-1 border-gray-200 rounded-sm hover:border-blue-500"
-                onClick={() => {
-                  setarrowContol((prev) => !prev);
-                }}
-              >
-                Today{" "}
-                {arrowContol ? <IoMdArrowDropdown /> : <IoMdArrowDropup />}
-              </button>
+              <div className="relative">
+                <button
+                  className="flex gap-x-3 items-center px-2 py-1 bg-gray-50 border-1 border-gray-200 rounded-sm hover:border-blue-500"
+                  onClick={() => {
+                    setarrowContol((prev) => !prev);
+                  }}
+                >
+                  {sales}
+                  {arrowContol ? <IoMdArrowDropdown /> : <IoMdArrowDropup />}
+                </button>
+                {arrowContol && (
+                  <div className="absolute bg-white flex flex-col py-2 w-full text-[14px] rounded-sm shadow-sm">
+                    {["Today", "This Month", "This Year"].map((option) => (
+                      <p
+                        key={option}
+                        className={`${
+                          sales === option ? "bg-blue-100" : ""
+                        } hover:bg-gray-100 p-2 cursor-pointer`}
+                        onClick={() => {
+                          setSales(option);
+                          setarrowContol(false);
+                        }}
+                      >
+                        {option}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
+
             <div className="border-1 border-gray-200 p-5 rounded-sm">
-              content
+              <Sales />
             </div>
           </div>
           {/* Transaction History box */}
