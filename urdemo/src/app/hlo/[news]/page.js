@@ -20,19 +20,18 @@ import {
   ResponsiveContainer,
   Layer,
 } from "recharts";
-
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+// import {
+//   Command,
+//   CommandEmpty,
+//   CommandGroup,
+//   CommandInput,
+//   CommandItem,
+//   CommandList,
+// } from "@/components/ui/command";
 import Img3 from "../../../../public/next.svg";
 import Img4 from "../../../../public/next.svg";
 import { useParams, useRouter } from "next/navigation";
-import { CloudCog, LogIn } from "lucide-react";
+// import { CloudCog, LogIn } from "lucide-react";
 
 const Buy_Crypto = ({ item }) => {
   const params = useParams();
@@ -53,9 +52,11 @@ const Buy_Crypto = ({ item }) => {
   //   console.log({ TOTAL_ITEMS, ROWS_PER_PAGE, totalPages });
   // }, []);
 
-  useEffect(() => {
-    localStorage.setItem("Buy_Crypto_Pagination", JSON.stringify(page));
-  }, [page]);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     localStorage.setItem("Buy_Crypto_Pagination", JSON.stringify(page));
+  //   }
+  // }, [page]);
 
   const handleMouseEnter = (id) => {
     setBoxId(id);
