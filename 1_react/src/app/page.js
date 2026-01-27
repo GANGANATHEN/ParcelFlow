@@ -7,15 +7,15 @@ import Image from "next/image";
 // import Task5 from "./tasks/task5"
 // import Task5_1 from "./tasks/task5_1"
 // task 6 start
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Mainp from "./tasks/task6/Main"
-// import Homee from "./tasks/task6/Home";
-// import Favourites from "./tasks/task6/Favourites";
-// import Store from "./tasks/task6/Store";
-// import About from "./tasks/task6/About";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Mainp from "./tasks/task6/Main"
+import Homee from "./tasks/task6/Home";
+import Favourites from "./tasks/task6/Favourites";
+import Store from "./tasks/task6/Store";
+import About from "./tasks/task6/About";
 // task 6 end
 // import Page from "./store/page"
-import Mainpage from "./Approuter/page";
+// import Mainpage from "./Approuter/page";
 //context-text-practice
 // import Homee from "./try/context_text/home"
 // import Contact from "./try/context_text/contact"
@@ -35,7 +35,7 @@ export default function Home() {
           {/* <Task3 /> */}
           {/* <Task5 /> */}
           {/* <Task5_1 /> */}
-          {/* task 6 start
+          {/* task 6 start */}
           <BrowserRouter>
               <Routes>
                   <Route path="/" element={<Mainp />} >
@@ -47,9 +47,9 @@ export default function Home() {
                   </Route>
               </Routes>
           </BrowserRouter>
-          task 6 end */}
+          {/* task 6 end */}
           {/* <Page /> */}
-          <Mainpage />
+          {/* <Mainpage /> */}
           {/* <Homee/> */}
           {/* <Contact/> */}
           {/* <Store />

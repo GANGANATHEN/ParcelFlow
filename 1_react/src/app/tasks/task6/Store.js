@@ -32,6 +32,59 @@ const Store = ({ search }) => {
     }
   }, [sharedState]);
 
+  // useEffect(() => {
+  //   if (!sharedState || sharedState.trim() === "") {
+  //     setData(store);
+  //   } else {
+  //     const searchTerm = sharedState.toLowerCase();
+  
+  //     // Filter based on multiple fields
+  //     const filtered = store.filter(item =>
+  //       item.cardtitle.toLowerCase().includes(searchTerm) ||
+  //       item.size.toLowerCase().includes(searchTerm) ||
+  //       item.color.toLowerCase().includes(searchTerm)
+  //     );
+  
+  //     setData(filtered);
+  //     console.log("Filtered data:", filtered);
+  //   }
+  // }, [sharedState, store]);
+
+  // ["s", "xs","m"].map(tag => (
+  //   <button onClick={() => handleSearchInput("size",tag)}>
+  //     {activeFilters.includes(tag) ? "✅" : "➕"} {tag}
+  //   </button>
+  // ))
+
+  const [activeFilters, setActiveFilters] = useState([]);
+
+  const handleSearchInput = (input) => {
+    const keyword = input.trim().toLowerCase();
+    setActiveFilters(prev =>
+      prev.includes(keyword)
+        ? prev.filter(item => item !== keyword)  // Remove if already selected
+        : [...prev, keyword]                     // Add if not already in
+    );
+  };
+
+useEffect(() => {
+  if (activeFilters.length === 0) {
+    setData(store); // show all
+  } else {
+    const filtered = store.filter(item =>
+      activeFilters.some(filter =>
+        item.cardtitle.toLowerCase().includes(filter) ||
+        item.size.toLowerCase().includes(filter) ||
+        (Array.isArray(item.color) &&
+          item.color.some(col => col.toLowerCase().includes(filter)))
+      )
+    );
+    setData(filtered);
+  }
+}, [activeFilters, store]);
+  
+  
+
   const handleFav = (item) => {
     const alreadyFav = favorites.some(fav => fav.id === item.id);
     const updatedFavorites = alreadyFav

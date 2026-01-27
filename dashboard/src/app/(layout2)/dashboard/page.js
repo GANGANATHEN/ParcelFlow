@@ -20,7 +20,7 @@ export default function Dashboard() {
   const [activeView, setActiveView] = useState("month");
   const [arrowContol, setarrowContol] = useState(false);
   const [sales, setSales] = useState("Today");
-
+ 
   return (
     <div className="flex flex-col gap-y-6">
       {/* dashboard */}

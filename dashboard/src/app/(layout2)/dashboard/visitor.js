@@ -26,8 +26,30 @@
    );
 
    const LineChart = () => {
+
+      
      const data = {
        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+       datasets: [
+         {
+           label: 'Page views',
+           data: [80, 60, 100, 95, 88, 92, 87, 90, 85, 88, 93, 40],
+           borderColor: 'rgba(0, 123, 255, 1)',
+           backgroundColor: 'rgba(0, 123, 255, 0.1)',
+           tension: 0.4,
+           fill: true,
+         },
+         {
+           label: 'Sessions',
+           data: [110, 65, 150, 35, 60, 30, 28, 65, 50, 55, 115, 42],
+           borderColor: 'rgba(0, 50, 150, 1)',
+           backgroundColor: 'rgba(0, 50, 150, 0.3)',
+           tension: 0.4,
+           fill: true,
+         },
+       ],
+       
        datasets: [
          {
            label: 'Page views',

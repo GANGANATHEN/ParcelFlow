@@ -33,7 +33,6 @@ const SignUp = () => {
   // useEffect(() => {
   //     validateEmail();
   // }, [useremail]);
-
   function handleSignup() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo")) || [];
 
@@ -61,7 +60,7 @@ const SignUp = () => {
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     if (!emailRegex.test(useremail)) {
       setError("Please enter a valid email address");
       return;
