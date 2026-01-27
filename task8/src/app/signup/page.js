@@ -33,6 +33,7 @@ const SignUp = () => {
   // useEffect(() => {
   //     validateEmail();
   // }, [useremail]);
+  
   function handleSignup() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo")) || [];
 
