@@ -1,0 +1,95 @@
+<div className="absolute rounded-3xl top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+        {/* "Elastic" distortion Definition */}
+        <svg className="absolute w-0 h-0">
+          <filter id="liquid-refraction">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.01"
+              numOctaves="2"
+              result="noise"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="17"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </svg>
+
+        {/* Adaptive Shadow Layer */}
+        <div
+          className="absolute rounded-3xl pointer-events-none"
+          style={{
+            inset: "-16px",
+            transform: "scale(1.05)",
+            opacity: 0.15,
+            background: "rgba(255,255,255,0.3)",
+            backdropFilter: "blur(15px)",
+            filter: "blur(10px)",
+            zIndex: 0,
+          }}
+        />
+
+        {/* Main Glass Container */}
+        <div className="relative w-120 h-55 rounded-3xl overflow-hidden shadow-2xl">
+          {/* CORRECT FILTER PLACEMENT: Only for Background Distraction */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none"
+            style={{
+              backdropFilter: "blur(6px) saturate(1.2) url(#liquid-refraction)",
+              WebkitBackdropFilter:
+                "blur(6px) saturate(1.2) url(#liquid-refraction)",
+              background: "rgba(255, 255, 255, 0.3)",
+              transform: "scale(1.1)", // Edge cuts
+            }}
+          />
+
+          {/* BORDER */}
+          <div
+            className="pointer-events-none absolute inset-0 rounded-3xl z-10
+      before:content-[''] before:absolute before:inset-0 before:rounded-3xl 
+      before:border-[1.5px] before:border-white/40"
+            style={{
+              WebkitMaskImage: `
+          linear-gradient(black, black),
+          radial-gradient(circle 24px at top right, transparent 0%, rgba(0,0,0,0.08) 42%, rgba(0,0,0,0.22) 58%, rgba(0,0,0,0.48) 76%, black 100%),
+          radial-gradient(circle 24px at bottom left, transparent 0%, rgba(0,0,0,0.08) 42%, rgba(0,0,0,0.22) 58%, rgba(0,0,0,0.48) 76%, black 100%)
+        `,
+              WebkitMaskComposite: "destination-out",
+              maskComposite: "exclude",
+            }}
+          ></div>
+
+          {/* LIGHT LEAK */}
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-40 z-20 pointer-events-none" />
+
+          {/* CONTENT (Sharp - No Filter) */}
+          <div className="relative z-30 p-6 space-y-4 text-white overflow-hidden">
+            <h2 className="text-xl font-semibold">Liquid Glass</h2>
+            <p className="text-sm text-white/80">
+              Real glass with proper reflection, distortion and adaptive shadow.
+            </p>
+
+            {/* Button */}
+            <div className="mt-2 w-fit px-4 py-2 relative rounded-full bg-black/40 backdrop-blur-[12px] hover:bg-black/30 transition text-lime-300 overflow-hidden">
+              <div
+                className="pointer-events-none absolute inset-0 rounded-full 
+          before:content-[''] before:absolute before:inset-0 before:rounded-full brightness-200
+          before:border-1 before:border-white/60"
+                style={{
+                  WebkitMaskImage: `
+              linear-gradient(black, black),
+              radial-gradient(circle 22px at top right, transparent 0%, rgba(0,0,0,0.08) 42%, rgba(0,0,0,0.22) 58%, rgba(0,0,0,0.48) 76%, black 100%),
+              radial-gradient(circle 22px at bottom left, transparent 0%, rgba(0,0,0,0.08) 42%, rgba(0,0,0,0.22) 58%, rgba(0,0,0,0.48) 76%, black 100%)
+            `,
+                  WebkitMaskComposite: "destination-out",
+                  maskComposite: "exclude",
+                }}
+              ></div>
+              Business
+            </div>
+          </div>
+        </div>
+      </div>

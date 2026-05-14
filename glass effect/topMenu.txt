@@ -1,0 +1,70 @@
+ {/* Menu */}
+                  {openMenu === nav.name && (
+                    <div className="absolute mt-5 navopen-below w-40 py-2 z-[9999]">
+                      <div className="relative rounded-2xl overflow-hidden">
+                        {/* BORDER */}
+                        <div
+                          className="pointer-events-none absolute inset-0 z-10 rounded-2xl 
+  before:content-[''] before:absolute before:inset-0 before:rounded-2xl brightness-175
+  before:border-1 before:border-white/80"
+                          style={{
+                            WebkitMaskImage: `
+  linear-gradient(black, black),
+
+  radial-gradient(circle 24px at top right,
+    transparent 0%,
+    rgba(0,0,0,0.08) 42%,
+    rgba(0,0,0,0.22) 58%,
+    rgba(0,0,0,0.48) 76%,
+    black 100%
+  ),
+
+  radial-gradient(circle 24px at bottom left,
+    transparent 0%,
+    rgba(0,0,0,0.08) 42%,
+    rgba(0,0,0,0.22) 58%,
+    rgba(0,0,0,0.48) 76%,
+    black 100%
+  ) `,
+                            WebkitMaskComposite: "destination-out",
+                            maskComposite: "exclude",
+                          }}
+                        ></div>
+                        {/* MAIN GLASS (IMPORTANT) */}
+                        <div className="absolute inset-0 backdrop-blur-[9px] bg-blend-hard-light bg-white/50  "></div>
+                        {/* SOFT INNER LIGHT */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent"></div>
+                        {/* TOP REFLECTION (REDUCED) */}
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 via-transparent to-transparent opacity-40"></div>
+                        {/* EDGE HIGHLIGHT (SOFT) */}
+                        <div className="absolute inset-0 rounded-2xl shadow-[inset_0_1px_0.5px_rgba(255,255,255,0.3),inset_0_-1px_0.5px_rgba(255,255,255,0.1)]"></div>
+                        <div
+                          className="absolute inset-0 rounded-2xl 
+  shadow-[
+    inset_0_1px_1px_rgba(255,255,255,0.3),
+    inset_0_-1px_1px_rgba(255,255,255,0.1),
+    0_4px_10px_rgba(0,0,0,0.15),
+    0_10px_30px_rgba(0,0,0,0.25)
+  ]"
+                        ></div>
+                        {/* CONTENT */}
+                        <div className="relative z-10 p-3">
+                          {nav.items.map((item, index) => (
+                            <div
+                              key={index}
+                              className={`px-3 py-1 cursor-pointer transition-colors ${
+                                sticky
+                                  ? "text-white"
+                                  : "text-black hover:text-[#D3ED05]"
+                              }`}
+                              onPointerDown={() => {
+                                setOpenMenu(null);
+                              }}
+                            >
+                              {item.title}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
