@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Production builds
+.next/
+out/
+build/
+
+# Large Files & Videos
+*.mp4
+*.avi
+*.mkv
+
+# Environment variables (Safe setup)
+.env
+.env.local
+.env.development.local
+
+# Sub-repositories you already pushed separately
+ShaChat/
+chat/
