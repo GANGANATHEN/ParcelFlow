@@ -1,0 +1,1370 @@
+"use client";
+
+import { useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { Flip } from "gsap/Flip";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
+import { morphConfig } from "@/app/draw1/components/pathData";
+
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, Flip, MorphSVGPlugin);
+
+export default function useLineAnimation({ refs }) {
+  useEffect(() => {
+    if (!refs || !refs.current) return;
+
+    // draw line main container
+    const scope = refs.current.scope;
+
+    // line animations
+    const wings = refs.current.wings;
+    const path = refs.current.path;
+
+    // buttons and wraps
+    const btnWraps = refs.current.btnWraps;
+
+    // for FAQ section
+    const svgSpacer = refs.current.revealSection;
+
+    if (!scope || !path) return;
+    morphConfig.forEach((item) => {
+      MorphSVGPlugin.convertToPath(item.shape);
+      MorphSVGPlugin.convertToPath(item.target);
+    });
+
+    const wingsLength = wings.getTotalLength();
+    const pathLength = path.getTotalLength();
+
+    // LINE DRAW
+    const speed = 0.18;
+
+    // LINE INIT
+    gsap.set(wings, {
+      strokeDasharray: wingsLength,
+      strokeDashoffset: wingsLength,
+    });
+
+    gsap.set(path, {
+      strokeDasharray: pathLength,
+      strokeDashoffset: pathLength,
+    });
+
+    // SVG SHAPE INIT
+    const allShapes = morphConfig.flatMap((item) => [item.shape, item.target]);
+
+    gsap.set(allShapes, {
+      transformOrigin: "50% 50%",
+    });
+
+    // FALL SVG ICONS INIT
+    gsap.set(
+      [
+        "#iconStar1",
+        "#iconStar2",
+        "#iconStar3",
+        "#iconStar4",
+        "#iconStar5",
+        "#iconStar6",
+        "#iconStar7",
+      ],
+      { opacity: 0, scale: 0 },
+    );
+
+    // for line height
+    const svg = scope.querySelector("#wrap");
+
+    function getDynamicEnd() {
+      const renderedSvgHeight = svg.getBoundingClientRect().height;
+      const distance = renderedSvgHeight * 1.45;
+      // console.log(distance);
+      return distance;
+    }
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        id: "mainLine",
+        trigger: scope,
+        start: "top center",
+        end: () => `+=${getDynamicEnd()}`,
+        scrub: 3.6,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    // svg height
+    function getResponsiveSvgHeight() {
+      const currentWidth = window.innerWidth;
+      const raw = currentWidth * (2455 / 1920);
+
+      return Math.max(1300, Math.min(raw, 2455));
+    }
+
+    function applyResponsiveSvgHeight() {
+      const dynamicHeight = getResponsiveSvgHeight();
+
+      gsap.set(svg, {
+        height: dynamicHeight,
+      });
+    }
+
+    // dynamic stroke width
+    function getResponsiveStroke() {
+      const currentWidth = window.innerWidth;
+      const ratio = currentWidth / 1920;
+
+      const raw = 3 * Math.pow(ratio, 0.85);
+
+      return Math.max(1.2, Math.min(raw, 3));
+    }
+
+    function applyResponsiveStroke() {
+      const dynamicStroke = getResponsiveStroke();
+
+      gsap.set([path, wings], {
+        strokeWidth: dynamicStroke,
+      });
+    }
+
+    //---------------\\
+
+    // wings (4% scroll)
+    tl.to(wings, {
+      strokeDashoffset: 0,
+      ease: "none",
+      duration: 0.006,
+    });
+
+    // path (96% scroll)
+    tl.to(path, {
+      strokeDashoffset: 0,
+      ease: "none",
+    });
+
+    const gap = 0.02; // distance between buttons
+    const startBase = 0.01;
+    const end = 0.24;
+
+    // BUTTON PATH FOLLOW
+    tl.to(
+      btnWraps[0],
+      {
+        motionPath: {
+          path,
+          align: path,
+          alignOrigin: [0.7, 0.7],
+          start: startBase,
+          end: end,
+        },
+        ease: "none",
+        duration: speed,
+      },
+      0,
+    );
+
+    tl.to(
+      btnWraps[1],
+      {
+        motionPath: {
+          path,
+          align: path,
+          alignOrigin: [0.7, 0.7],
+          start: startBase + gap,
+          end: end,
+        },
+        ease: "none",
+        duration: speed,
+      },
+      0,
+    );
+
+    tl.to(
+      btnWraps[2],
+      {
+        motionPath: {
+          path,
+          align: path,
+          alignOrigin: [0.7, 0.7],
+          start: startBase + gap * 3,
+          end: end,
+        },
+        ease: "none",
+        duration: speed,
+      },
+      0,
+    );
+
+    // BUTTONS AlIGN & STYLE
+    const start1 = 0.02;
+    const start2 = 0.03;
+
+    const mid1 = start1 + (end - start1) * 0.16;
+    const mid2 = start2 + (end - start2) * 0.1;
+    const mid3 = start2 + (end - start2) * 0.14;
+
+    tl.to(
+      btnWraps[0],
+      {
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "53px",
+        marginLeft: "153px",
+        marginTop: "-53px",
+        duration: 0.15,
+        ease: "power2.out",
+      },
+      mid1,
+    );
+
+    tl.to(
+      btnWraps[1],
+      {
+        flexDirection: "column",
+        alignItems: "center",
+        marginLeft: "53px",
+        marginTop: "-23px",
+        gap: "53px",
+        duration: 0.15,
+        ease: "power2.out",
+      },
+      mid2,
+    );
+
+    tl.to(
+      btnWraps[2],
+      {
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "-33px",
+        marginLeft: "-73px",
+        gap: "53px",
+        duration: 0.15,
+        ease: "power2.out",
+      },
+      mid3,
+    );
+
+    tl.to(
+      btnWraps[0],
+      {
+        opacity: 0,
+        duration: 0.04,
+        scale: 0.3,
+      },
+      "0.13",
+    );
+
+    // button inner float and heart beat animation
+    btnWraps.forEach((wrap) => {
+      if (!wrap || !wrap.children) return;
+
+      Array.from(wrap.children).forEach((el, i) => {
+        gsap.to(el, {
+          yPercent: "random(-8,8)",
+          xPercent: "random(-6,6)",
+          rotate: "random(-3,3)",
+          duration: "random(1.6,1.8)",
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          transformOrigin: "50% 50%",
+        });
+      });
+    });
+
+    // Button SWAP WHEN REACH END
+    const swapPoint = speed;
+
+    // morph shapes, text hide and gradient change
+    morphConfig.forEach((item, i) => {
+      const delay = swapPoint - 0.08 + i * 0.005;
+
+      // morph
+      tl.to(
+        item.shape,
+        {
+          morphSVG: {
+            shape: item.target,
+            shapeIndex: "auto",
+            type: "rotational",
+          },
+          duration: 0.08,
+          ease: "expo.inOut",
+        },
+        delay,
+      );
+
+      // text hide
+      tl.to(
+        item.text,
+        {
+          opacity: 0,
+          duration: 0.05,
+        },
+        delay + 0.02,
+      );
+
+      // gradient change
+      tl.to(
+        item.shape,
+        {
+          attr: { fill: item.gradient },
+          duration: 0.15,
+        },
+        delay + 0.08,
+      );
+    });
+
+    // BTN DROP
+    const anchors = [
+      "#anchor3",
+      "#anchor2",
+      "#anchor1", // shield shape
+      "#anchor4", // impeller shape
+      "#anchor3", // m shape
+      "#anchor1", // b shape
+    ];
+
+    refs.current.buttons.forEach((btn, i) => {
+      const anchor = scope.querySelector(anchors[i]);
+      if (!btn || !anchor) return;
+
+      const delay = swapPoint + i * 0.002;
+
+      tl.to(
+        btn,
+        {
+          x: () =>
+            anchor.getBoundingClientRect().left -
+            btn.getBoundingClientRect().left -
+            12,
+
+          y: () =>
+            anchor.getBoundingClientRect().top -
+            btn.getBoundingClientRect().top -
+            10,
+
+          duration: 0.06,
+          ease: "power2.in",
+        },
+        delay,
+      ).to(
+        btn,
+        {
+          opacity: 0,
+          scale: 0.6,
+          duration: 0.05,
+        },
+        delay + 0.06,
+      );
+    });
+
+    // ICONS FALL IN ALONG PATH
+    function positionIcons() {
+      const items = [
+        { icon: "#iconStar1", anchor: "#anchor1" },
+        { icon: "#iconStar2", anchor: "#anchor2" },
+        { icon: "#iconStar3", anchor: "#anchor3" },
+        { icon: "#iconStar4", anchor: "#anchor4" },
+        { icon: "#iconStar5", anchor: "#anchor5" },
+        { icon: "#iconStar6", anchor: "#anchor6" },
+        { icon: "#iconStar7", anchor: "#anchor7" },
+      ];
+
+      const parentRect = scope.getBoundingClientRect();
+
+      items.forEach((item) => {
+        const anchor = scope.querySelector(item.anchor);
+        const icon = scope.querySelector(item.icon);
+
+        if (!anchor || !icon) return;
+
+        const rect = anchor.getBoundingClientRect();
+
+        gsap.set(icon, {
+          x: rect.left - parentRect.left - 2,
+          y: rect.top - parentRect.top - 7,
+        });
+      });
+    }
+
+    // BUTTON scale & fade in
+    btnWraps.forEach((wrap, i) => {
+      tl.fromTo(
+        wrap,
+        { opacity: 0, scale: 0.7 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.12,
+          ease: "back.out(1.2)",
+        },
+        0.02 + i * 0.03,
+      );
+    });
+
+    // appear new icons
+    const icons = [
+      { el: "#iconStar1", at: swapPoint + 0.04 },
+      { el: "#iconStar2", at: swapPoint + 0.05 },
+      { el: "#iconStar3", at: swapPoint + 0.06 },
+      { el: "#iconStar4", at: swapPoint + 0.07 },
+      { el: "#iconStar5", at: swapPoint + 0.15 },
+      { el: "#iconStar6", at: swapPoint + 0.18 },
+      { el: "#iconStar7", at: swapPoint + 0.2 },
+    ];
+
+    icons.forEach((item) => {
+      tl.fromTo(
+        item.el,
+        { opacity: 0, scale: 0 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.08,
+          ease: "back.out(2)",
+        },
+        item.at,
+      );
+    });
+
+    // other icons merge with arrow icon
+    const icons1 = ["#iconStar1", "#iconStar2", "#iconStar3", "#iconStar4"];
+
+    function getRelativePosition(target, parent) {
+      const t = target.getBoundingClientRect();
+      const p = parent.getBoundingClientRect();
+
+      return {
+        x: t.left - p.left,
+        y: t.top - p.top,
+      };
+    }
+
+    const mergeAnchor = scope.querySelector("#anchor5");
+
+    // iconStar2 move to anchor
+    tl.addLabel("mergeMove", swapPoint + 0.1);
+    tl.addLabel("blast", "mergeMove-=0.001");
+
+    const others = icons1.filter((i) => i !== "#iconStar4");
+
+    const blastItems = [
+      {
+        wrapper: "#iconStar1",
+        shape: "#shape1",
+        circle: "#shapeCircle1",
+      },
+      {
+        wrapper: "#iconStar2",
+        shape: "#squareShape1",
+        circle: "#shapeCircle2",
+      },
+      {
+        wrapper: "#iconStar3",
+        shape: "#shape3",
+        circle: "#shapeCircle3",
+      },
+    ];
+
+    blastItems.forEach((item) => {
+      gsap.set(item.circle, {
+        scale: 0,
+        transformOrigin: "50% 50%",
+      });
+
+      gsap.set(`${item.wrapper} .piece`, {
+        opacity: 0,
+        scale: 0,
+        transformOrigin: "50% 50%",
+      });
+    });
+
+    blastItems.forEach((item, i) => {
+      const delay = i * 0.001; // slight stagger between icons
+
+      // morph → small circle
+      tl.to(
+        item.shape,
+        {
+          morphSVG: item.circle,
+          scale: 0.2,
+          duration: 0.08,
+          ease: "expo.inOut",
+        },
+        `mergeMove+=${delay}`,
+      );
+
+      // small pop
+      tl.to(
+        item.shape,
+        {
+          scale: 0.28,
+          duration: 0.04,
+          ease: "power2.out",
+        },
+        `mergeMove+=${0.05 + delay}`,
+      );
+
+      // particles appear
+      tl.to(
+        `${item.wrapper} .piece`,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.05,
+        },
+        `blast+=${delay}`,
+      );
+
+      // explode
+      tl.fromTo(
+        `${item.wrapper} .piece`,
+        {
+          x: 0,
+          y: 0,
+        },
+        {
+          x: "random(-80,80)",
+          y: "random(-80,80)",
+          rotation: "random(-180,180)",
+          opacity: 0,
+          scale: "random(0.6,1.2)",
+          duration: 0.4,
+          ease: "power3.out",
+          stagger: 0.015,
+        },
+        `blast+=${0.02 + delay}`,
+      );
+    });
+
+    tl.to(
+      others,
+      {
+        opacity: 0,
+        scale: 0.3,
+        duration: 0.04,
+      },
+      swapPoint + 0.15,
+    );
+
+    let iconData = [];
+
+    tl.add(() => {
+      iconData = others.map((sel) => {
+        const el = scope.querySelector(sel);
+
+        return {
+          el,
+          startX: gsap.getProperty(el, "x"),
+          startY: gsap.getProperty(el, "y"),
+        };
+      });
+    }, "mergeMove");
+
+    const chase = { t: 0 };
+
+    tl.to(
+      others,
+      {
+        opacity: 1,
+        duration: 0.01,
+        stagger: 0.015,
+      },
+      "mergeMove",
+    );
+
+    tl.to(
+      chase,
+      {
+        t: 1,
+        duration: 0.05,
+        ease: "none",
+        onUpdate: () => {
+          const pos = getRelativePosition(mergeAnchor, scope);
+
+          iconData.forEach((item) => {
+            const nx = item.startX + (pos.x - item.startX) * chase.t;
+            const ny = item.startY + (pos.y - item.startY) * chase.t;
+
+            gsap.set(item.el, {
+              x: nx,
+              y: ny,
+            });
+          });
+        },
+      },
+      "mergeMove+=0.01",
+    ).set(
+      others,
+      {
+        opacity: 0,
+        scale: 0.3,
+      },
+      "mergeMove+=0.45",
+    );
+
+    // ----------------------------------------- \\
+
+    gsap.set("#iconStar4 svg", {
+      transformOrigin: "50% 50%",
+    });
+
+    gsap.set("#shape4", {
+      transformOrigin: "50% 50%",
+    });
+
+    gsap.set("#arrowShape1", {
+      visibility: "hidden",
+    });
+
+    gsap.set("#iconStar4", {
+      force3D: true,
+      transformOrigin: "50% 50%",
+      svgOrigin: "center center",
+      willChange: "transform",
+      transformPerspective: 1000,
+    });
+
+    MorphSVGPlugin.convertToPath(
+      "#squareShape1",
+      "#shape4",
+      "#arrowShape1",
+      "#circleShape1",
+    );
+
+    // impeller initial size for morph match
+    function getResponsiveInitialImpellerSize() {
+      const w = window.innerWidth;
+
+      if (w >= 1600) {
+        return 25;
+      }
+
+      if (w >= 1476) {
+        return 22;
+      }
+
+      if (w >= 1220) {
+        return 19;
+      }
+
+      return 16;
+    }
+
+    function applyResponsiveInitialImpeller() {
+      const size = getResponsiveInitialImpellerSize();
+
+      gsap.set("#iconStar4 svg", {
+        attr: {
+          width: size,
+          height: size,
+        },
+      });
+    }
+
+    applyResponsiveInitialImpeller();
+
+    // morph
+    const morphStart = swapPoint + 0.09;
+
+    // morph shape only
+    tl.to(
+      "#shape4",
+      {
+        morphSVG: {
+          shape: "#arrowShape1",
+          shapeIndex: "auto",
+          type: "rotational",
+        },
+        duration: 0.09,
+        delay: 0.01,
+        ease: "expo.inOut",
+      },
+      morphStart,
+    );
+
+    // then ignite arrow gradient
+    tl.to(
+      "#shape4",
+      {
+        attr: { fill: "url(#arrowGradient1)" },
+        duration: 0.04,
+        ease: "power1.out",
+      },
+      morphStart + 0.045,
+    );
+
+    // for responsive morph icon size and position
+    // function getResponsiveMorphIconSize() {
+    //   const w = window.innerWidth;
+
+    //   if (w >= 1920) {
+    //     return {
+    //       arrow: 54,
+    //       circle: 84,
+    //       shiftX: -47,
+    //       shiftY: -20,
+    //     };
+    //   }
+
+    //   if (w >= 1536) {
+    //     return {
+    //       arrow: 46,
+    //       circle: 72,
+    //       shiftX: -40,
+    //       shiftY: -17,
+    //     };
+    //   }
+
+    //   if (w >= 1280) {
+    //     return {
+    //       arrow: 40,
+    //       circle: 62,
+    //       shiftX: -34,
+    //       shiftY: -14,
+    //     };
+    //   }
+
+    //   return {
+    //     arrow: 32,
+    //     circle: 50,
+    //     shiftX: -27,
+    //     shiftY: -10,
+    //   };
+    // }
+    function getResponsiveMorphIconSize() {
+      const w = window.innerWidth;
+      const ratio = Math.min(w / 1920, 1);
+
+      return {
+        arrow: Math.max(32, 54 * ratio),
+        circle: Math.max(50, 84 * ratio),
+        shiftX: Math.max(-47 * ratio, -27),
+        shiftY: Math.max(-20 * ratio, -10),
+      };
+    }
+
+    const morphIconCfg = getResponsiveMorphIconSize();
+
+    // add width, height and rotation to match the arrow icon
+    tl.to(
+      "#iconStar4 svg",
+      {
+        attr: {
+          width: morphIconCfg.arrow,
+          height: morphIconCfg.arrow,
+        },
+        duration: 0.07,
+        rotation: -180,
+        ease: "expo.inOut",
+      },
+      morphStart + 0.01,
+    );
+
+    // arrow traveling area...
+    const travelAnchors = ["#anchor5", "#anchor8", "#anchorMergePath"];
+
+    function getCenteredPosition(target, mover, parent) {
+      const t = target.getBoundingClientRect();
+      const m = mover.getBoundingClientRect();
+      const p = parent.getBoundingClientRect();
+
+      return {
+        x: t.left - p.left + t.width / 2 - m.width / 2,
+        y: t.top - p.top + t.height / 2 - m.height / 2,
+      };
+    }
+
+    // #iconStar4 travel other anchor position
+    travelAnchors.forEach((anchor, i) => {
+      tl.to(
+        "#iconStar4",
+        {
+          x: () =>
+            getCenteredPosition(
+              scope.querySelector(anchor),
+              scope.querySelector("#iconStar4"),
+              scope,
+            ).x,
+
+          y: () =>
+            getCenteredPosition(
+              scope.querySelector(anchor),
+              scope.querySelector("#iconStar4"),
+              scope,
+            ).y,
+
+          duration: 0.05,
+          ease: "power2.out",
+        },
+        "mergeMove+=" + (0.02 + i * 0.05),
+      );
+    });
+
+    // icons2 move anchor8
+    const icons2 = ["#iconStar5", "#iconStar6", "#iconStar7"];
+
+    // arrow icon morph circle
+    tl.to(
+      "#shape4",
+      {
+        morphSVG: {
+          shape: "#circleShape1",
+          shapeIndex: "auto",
+          type: "rotational",
+        },
+        duration: 0.09,
+        ease: "expo.inOut",
+      },
+      "mergeMove+=0.07",
+    );
+
+    tl.set(
+      "#shape4",
+      {
+        attr: { fill: "#ffffff" },
+      },
+      "mergeMove+=0.117",
+    );
+
+    tl.to(
+      "#iconStar4 svg",
+      {
+        attr: {
+          width: morphIconCfg.circle,
+          height: morphIconCfg.circle,
+        },
+        duration: 0.07,
+        rotation: -180,
+        ease: "expo.inOut",
+      },
+      "mergeMove+=0.07",
+    ).fromTo(
+      "#iconStar4 svg",
+      { x: 0, y: 0 },
+      {
+        x: morphIconCfg.shiftX,
+        y: morphIconCfg.shiftY,
+        zIndex: 3,
+        duration: 0.07,
+        ease: "none",
+      },
+      "mergeMove+=0.08",
+    );
+
+    // .fromTo(
+    //   "#iconStar4 svg",
+    //   { x: 0, y: 0 },
+    //   {
+    //     x: -47,
+    //     y: -20,
+    //     zIndex: 3,
+    //     duration: 0.07,
+    //     ease: "none",
+    //   },
+    //   "mergeMove+=0.08",
+    // );
+
+    // icon - 5,6,7 animation
+    tl.to(
+      icons2,
+      {
+        scale: 0.6,
+        filter: "blur(8px) brightness(2)",
+        opacity: 0,
+        duration: 0.12,
+        ease: "power2.out",
+        stagger: 0.04,
+      },
+      "<+=0.02",
+    );
+
+    tl.to(
+      "#iconStar4 svg",
+      {
+        x: 0,
+        y: 0,
+        duration: 0.07,
+        ease: "none",
+      },
+      "<",
+    );
+
+    // ---------------- split animation ----------------
+
+    // function getResponsiveSplitConfig() {
+    //   const width = window.innerWidth;
+
+    //   // desktop reference = 1920
+    //   const ratio = width / 1920;
+
+    //   return {
+    //     smallSize: Math.max(38, Math.min(70 * ratio, 70)),
+    //     smallRadius: Math.max(16, Math.min(30 * ratio, 30)),
+
+    //     bigSize: Math.max(60, Math.min(110 * ratio, 110)),
+    //     bigRadius: Math.max(28, Math.min(50 * ratio, 50)),
+    //   };
+    // }
+
+    function getResponsiveSplitConfig() {
+      const w = window.innerWidth;
+
+      if (w >= 1920) {
+        return {
+          smallSize: 60,
+          bigSize: 110,
+          smallRadius: 30,
+          bigRadius: 50,
+        };
+      }
+
+      if (w >= 1536) {
+        return {
+          smallSize: 50,
+          bigSize: 95,
+          smallRadius: 26,
+          bigRadius: 42,
+        };
+      }
+
+      if (w >= 1280) {
+        return {
+          smallSize: 44,
+          bigSize: 82,
+          smallRadius: 22,
+          bigRadius: 36,
+        };
+      }
+
+      return {
+        smallSize: 36,
+        bigSize: 72,
+        smallRadius: 14,
+        bigRadius: 32,
+      };
+    }
+
+    function getScopePos(el) {
+      const r = el.getBoundingClientRect();
+      const p = scope.getBoundingClientRect();
+
+      return {
+        x: r.left - p.left,
+        y: r.top - p.top,
+      };
+    }
+
+    const splitAnchors = ["#anchor9", "#anchor10", "#anchor11", "#anchor12"];
+    const splitParticles = ["#splitC1", "#splitC2", "#splitC3", "#splitC4"];
+
+    function getParticleCenters() {
+      const cfg = getResponsiveSplitConfig();
+
+      return [
+        cfg.smallSize / 2,
+        cfg.smallSize / 2,
+        cfg.smallSize / 2,
+        cfg.bigSize / 2,
+      ];
+    }
+
+    const particleCenters = getParticleCenters();
+
+    // ---------------- PRE CALC CENTER (set 4 circle) ----------------
+    function applyResponsiveSplitCircles() {
+      const cfg = getResponsiveSplitConfig();
+
+      splitParticles.forEach((particle, i) => {
+        const isLast = i === 3;
+
+        const svgEl = scope.querySelector(`${particle} svg`);
+        const circleEl = scope.querySelector(`${particle} circle`);
+
+        // ---------------- FIRST 3 SMALL MORPH PARTICLES ----------------
+        if (!isLast) {
+          const size = cfg.smallSize;
+
+          gsap.set(svgEl, {
+            attr: {
+              width: size,
+              height: size,
+              viewBox: "0 0 30 30", // fake scale from 30 system
+            },
+          });
+
+          if (circleEl) {
+            gsap.set(circleEl, {
+              attr: {
+                cx: 15,
+                cy: 15,
+                r: 14,
+              },
+            });
+          }
+        }
+
+        // ---------------- LAST BIG TRUE CIRCLE ----------------
+        if (isLast) {
+          const size = cfg.bigSize;
+          const center = size / 2;
+          const radius = cfg.bigRadius;
+
+          gsap.set(svgEl, {
+            attr: {
+              width: size,
+              height: size,
+              viewBox: `0 0 ${size} ${size}`, // IMPORTANT real system
+            },
+          });
+
+          if (circleEl) {
+            gsap.set(circleEl, {
+              attr: {
+                cx: center,
+                cy: center,
+                r: radius,
+              },
+            });
+          }
+        }
+      });
+    }
+
+    let splitCenter = { x: 0, y: 0 };
+
+    function getVisualCenter(target, parent) {
+      const t = target.getBoundingClientRect();
+      const p = parent.getBoundingClientRect();
+
+      return {
+        x: t.left - p.left + t.width / 2,
+        y: t.top - p.top + t.height / 2,
+      };
+    }
+
+    tl.add(() => {
+      splitCenter = getVisualCenter(
+        scope.querySelector("#iconStar4 svg"),
+        scope,
+      );
+    }, ">");
+
+    // ---------------- ICON TRAVEL ----------------
+
+    tl.to(
+      "#iconStar4",
+      {
+        motionPath: {
+          path,
+          align: path,
+          alignOrigin: [0.5, 0.5],
+          start: 2.796,
+          end: 2.92,
+        },
+        duration: 0.09,
+        ease: "none",
+        onComplete: () => {
+          splitCenter = getScopePos(scope.querySelector("#iconStar4"));
+        },
+      },
+      ">",
+    );
+
+    // ---------------- ISOLATED REVERSIBLE SPLIT TL ----------------
+    const splitTL = gsap.timeline();
+
+    // hide impeller naturally reversible
+    splitTL.set(
+      "#shape4",
+      {
+        opacity: 0,
+      },
+      0,
+    );
+
+    // spawn particles at exact center using timeline .set (NOT callback gsap.set)
+    splitParticles.forEach((particle, i) => {
+      splitTL.set(
+        particle,
+        {
+          opacity: 1,
+          scale: 1,
+          x: () => splitCenter.x + 35 - getParticleCenters()[i],
+          y: () => splitCenter.y + 35 - getParticleCenters()[i],
+        },
+        0,
+      );
+    });
+
+    // split outward
+    splitParticles.forEach((particle, i) => {
+      splitTL.to(
+        particle,
+        {
+          x: () =>
+            getScopePos(scope.querySelector(splitAnchors[i])).x -
+            particleCenters[i],
+          y: () =>
+            getScopePos(scope.querySelector(splitAnchors[i])).y -
+            particleCenters[i],
+          duration: 0.04,
+          ease: "expo.out",
+        },
+        0,
+      );
+    });
+
+    // first 3 fly right
+    const flyCircles = [
+      {
+        id: "#splitC1",
+        x: "+=1700",
+        y: "+=580",
+        scale: 0.7,
+        dur: 0.13,
+        at: 0.02,
+      },
+      {
+        id: "#splitC2",
+        x: "+=1650",
+        y: "+=990",
+        scale: 0.55,
+        dur: 0.12,
+        at: 0.025,
+      },
+      {
+        id: "#splitC3",
+        x: "+=2000",
+        y: "-=40",
+        scale: 0.62,
+        dur: 0.12,
+        at: 0.03,
+      },
+    ];
+
+    const morphTargets = {
+      "#splitC1": "#splitMorph1",
+      "#splitC2": "#splitMorph2",
+      "#splitC3": "#splitMorph3",
+    };
+
+    flyCircles.forEach((item, i) => {
+      // fly wrapper
+      splitTL.to(
+        item.id,
+        {
+          x: item.x,
+          y: item.y,
+          scale: item.scale,
+          opacity: 0,
+          duration: item.dur,
+          ease: "power4.in",
+        },
+        item.at,
+      );
+
+      splitTL.set(
+        item.id,
+        {
+          zIndex: 10,
+        },
+        item.at + 0.03,
+      );
+
+      // morph inner path while moving
+      splitTL.to(
+        `${item.id} path:first-of-type`,
+        {
+          morphSVG: {
+            shape: morphTargets[item.id],
+            shapeIndex: "auto",
+            type: "rotational",
+          },
+          duration: item.dur * 0.85,
+          ease: "expo.inOut",
+        },
+        item.at + 0.03,
+      );
+
+      const morphFills = {
+        "#splitC1": "url(#HGradient)",
+        "#splitC2": "url(#SGradient)",
+        "#splitC3": "url(#SHGradient)",
+      };
+
+      // color ignite after morph forms
+      splitTL.to(
+        `${item.id} path:first-of-type`,
+        {
+          attr: { fill: morphFills[item.id] },
+          duration: item.dur * 0.3,
+          ease: "power1.out",
+        },
+        item.at + item.dur * 0.65,
+      );
+
+      // little spin = premium feel
+      splitTL.to(
+        `${item.id} svg`,
+        {
+          rotation: "random(-180,180)",
+          duration: item.dur,
+          ease: "none",
+        },
+        item.at,
+      );
+    });
+
+    // last circle fullscreen expand
+    splitTL.to(
+      "#splitC4",
+      {
+        scale: 40,
+        opacity: 0.9,
+        duration: 0.07,
+        delay: 0.025,
+        ease: "expo.in",
+      },
+      0.05,
+    );
+
+    const revealSection = refs.current.revealSection;
+
+    gsap.set(revealSection, {
+      opacity: 0,
+      y: 0,
+      scale: 0.96,
+      filter: "blur(8px)",
+    });
+
+    splitTL.to(
+      revealSection,
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 0.04,
+        delay: 0.05,
+        ease: "power3.out",
+      },
+      0.09,
+    );
+
+    // optional final hide for reverse safety
+    splitTL.to(
+      "#splitC4",
+      {
+        opacity: 0,
+        duration: 0.01,
+      },
+      0.17,
+    );
+
+    // attach
+    tl.add(splitTL, ">");
+
+    // ---------------- END CINEMATIC SPLIT ----------------
+
+    // CONTENT REVEAL
+    const animateContent = (el) => {
+      const tl2 = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: "top 90%",
+          end: "top 25%",
+          scrub: 1.2,
+        },
+      });
+
+      tl2
+        .fromTo(
+          el,
+          { opacity: 0, scale: 0.7, y: 60, rotate: 0 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            rotate: -6,
+            ease: "none",
+            duration: 0.5,
+          },
+        )
+        .to(
+          el,
+          {
+            rotate: 0,
+            ease: "none",
+            duration: 0.3,
+          },
+          0.4, // second half-1 of scroll
+        );
+    };
+
+    // content sections
+    const content = [
+      refs.current.content1,
+      refs.current.content2,
+      refs.current.content3,
+    ];
+
+    // apply to all content sections
+    content.forEach((el) => {
+      if (!el) return;
+      animateContent(el);
+    });
+
+    // for spacer in FAQ section
+
+    function applySvgBottomSpacing() {
+      if (!svgSpacer || !scope) return;
+
+      const svgHeight = svg.getBoundingClientRect().height;
+      const sectionHeight = scope.getBoundingClientRect().height;
+
+      const extraOverflow = svgHeight - sectionHeight;
+
+      const finalGap = extraOverflow > 0 ? extraOverflow + 20 : 20;
+
+      // console.log(
+      //   "svgH =",
+      //   svgHeight,
+      //   "sectionH =",
+      //   sectionHeight,
+      //   "overflow =",
+      //   extraOverflow,
+      //   "finalGap =",
+      //   finalGap,
+      // );
+
+      gsap.set(svgSpacer, {
+        marginTop: finalGap,
+      });
+    }
+
+    const responsiveFns = [
+      applyResponsiveSvgHeight,
+      applyResponsiveStroke,
+      positionIcons,
+      applyResponsiveSplitCircles,
+      applySvgBottomSpacing,
+      // applyResponsiveInitialImpeller,
+    ];
+
+    responsiveFns.forEach((fn) => fn());
+
+    responsiveFns.forEach((fn) => {
+      window.addEventListener("resize", fn);
+      ScrollTrigger.addEventListener("refresh", fn);
+    });
+
+    return () => {
+      responsiveFns.forEach((fn) => {
+        window.removeEventListener("resize", fn);
+        ScrollTrigger.removeEventListener("refresh", fn);
+      });
+    };
+  }, [refs]);
+}

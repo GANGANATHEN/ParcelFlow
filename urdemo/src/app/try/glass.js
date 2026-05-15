@@ -574,7 +574,8 @@ export default function LiquidGlass({ status = "error" }) {
         <div className="relative z-10 flex items-center gap-x-4 w-full">
           <button
             className="
-          flex shrink-0 items-center justify-center rounded-full bg-white/20 p-1.5 w-10 h-10 text-white text-2xl font-light backdrop-blur-3xl
+          flex shrink-0 items-center justify-center rounded-full bg-white/20 p-1.5 w-10 h-10 
+          text-white text-2xl font-light backdrop-blur-3xl
         "
             style={{
               boxShadow: `

@@ -1,0 +1,36 @@
+/* liquid-glass.css */
+
+:root {
+  --tint-color: 255, 255, 255;
+  --tint-opacity: 0.06;
+  --shadow-blur: 20px;
+  --shadow-spread: -5px;
+  --shadow-color: rgba(255, 255, 255, 0.45);
+  --outer-shadow-blur: 24px;
+}
+
+.glassDiv {
+  position: absolute;
+  isolation: isolate;
+  touch-action: none;
+  z-index: 20;
+}
+
+.glassDiv::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: rgba(var(--tint-color), var(--tint-opacity));
+  pointer-events: none;
+}
+
+.glassDiv::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: url(#liquid-glass-filter);
+  -webkit-backdrop-filter: url(#liquid-glass-filter);
+  isolation: isolate;
+}

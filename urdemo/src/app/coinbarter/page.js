@@ -18,7 +18,7 @@ import Image from "next/image";
 // import product4 from "../../../public/assets/hero_banner/product-4.png";
 // import product5 from "../../../public/assets/hero_banner/product-5.png";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GlassSVG from "./GlassSvg";
 // import { useSearch } from "../context/page";
 

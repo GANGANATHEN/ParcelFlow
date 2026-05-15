@@ -150,6 +150,7 @@ import GlassToast from "./border/page";
 import LiquidGlass from "./try/glass";
 
 const page = () => {
+
   return (
     <div className="h-dvh w-full relative overflow-y-auto inset-0 overflow-hidden bg-cover bg-center">
       {/* background video border*/}
