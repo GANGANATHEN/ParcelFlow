@@ -4,6 +4,7 @@ import React from "react";
 import Nav_Component from "./coinbarter/page";
 // import GlassToast from "./border/page";
 import LiquidGlass from "./try/glass";
+import Popup from "./popup/popup";
 
 const page = () => {
   return (
@@ -16,10 +17,11 @@ const page = () => {
         muted
         playsInline
         className=" absolute inset-0 w-full h-full object-cover
-         transition-opacity duration-600"
+         transition-opacity duration-600 -z-1"
       >
         <source src="/image/video.mp4" type="video/mp4" />
       </video>
+      {/* <Popup /> */}
       <div className="sticky w-full h-full top-0 ">
         <Nav_Component />
       </div>
@@ -48,10 +50,9 @@ const page = () => {
               Doloribus deleniti sed veniam voluptate!
             </p>
           </div>
-          <div className="fixed z-10 top-120 mr-60">
-            {/* Error Mode */}
+          {/* <div className="fixed z-10 top-120 mr-60">
             <LiquidGlass status="error" />
-          </div>
+          </div> */}
         </div>
         <div className="h-dvh flex flex-col justify-center items-center px-5">
           <h1 className="text-white font-bold text-2xl width-[70%]">

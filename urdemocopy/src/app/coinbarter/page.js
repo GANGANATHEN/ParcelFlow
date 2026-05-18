@@ -22,7 +22,6 @@ import Image from "next/image";
 // import GlassSVG from "./GlassSvg";
 // import { useSearch } from "../context/page";
 
-
 const Nav_Component = () => {
   // State to manage the visibility of the mobile menu
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -351,7 +350,6 @@ const Nav_Component = () => {
 
   return (
     <div className="w-full">
-
       {/* Wallet open Modal */}
 
       {openWallet && (
@@ -730,7 +728,7 @@ const Nav_Component = () => {
         className={`${
           sticky
             ? "stickys"
-            : "absolute top-0 z-50 min-[117.5rem]:px-60! bg-amber-  lg:px-12 xl:py-6! xl:px-16! 2xl:py-11! lg:py-6 md:py-8 sm:6"
+            : "absolute top-0 hidden min-[117.5rem]:px-60! bg-amber-  lg:px-12 xl:py-6! xl:px-16! 2xl:py-11! lg:py-6 md:py-8 sm:6"
         } ${openMenu ? "nav-responsive" : "sticky-bg"} ${
           hideNavbar ? "opacity-0 pointer-events-none" : "opacity-100"
         } transition-all duration-300  w-full navber-dasktop `}
@@ -1232,7 +1230,7 @@ shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,25
       </svg>
 
       {/* working code */}
-      <div className="absolute rounded-3xl top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+      <div className="absolute hidden rounded-3xl top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
         {/* "Elastic" distortion Definition */}
         <svg className="absolute w-0 h-0">
           <filter id="liquid-refraction">
@@ -1268,7 +1266,6 @@ shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,25
 
         {/* Main Glass Container */}
         <div className="relative w-120 h-55 rounded-3xl overflow-hidden shadow-2xl">
-
           {/* CORRECT FILTER PLACEMENT: Only for Background Distraction */}
           {/* <div
             className="absolute inset-0 pointer-events-none"
@@ -1330,8 +1327,10 @@ shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,25
             </p>
 
             {/* Button (No changes) */}
-            <div className="mt-2 w-fit px-4 py-2 relative rounded-full bg-black/40 
-            backdrop-blur-md hover:bg-black/30 transition text-lime-300 overflow-hidden">
+            <div
+              className="mt-2 w-fit px-4 py-2 relative rounded-full bg-black/40 
+            backdrop-blur-md hover:bg-black/30 transition text-lime-300 overflow-hidden"
+            >
               <div
                 className="pointer-events-none absolute inset-0 rounded-full 
           before:content-[''] before:absolute before:inset-0 before:rounded-full brightness-200
@@ -1374,7 +1373,7 @@ shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,25
 
       {/* liquid glass effect */}
 
-      <div className="navber-tab-mobile">
+      <div className="navber-tab-mobile hidden">
         <div className="absolute top-0 z-50 md:px-12 py-7 px-8 ">
           <Link href="/" className="text-4xl text-white font-extrabold">
             Coin Barter
