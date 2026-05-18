@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import Nav_Component from "./coinbarter/page";
 // import GlassToast from "./border/page";
@@ -21,7 +20,7 @@ const page = () => {
       >
         <source src="/image/video.mp4" type="video/mp4" />
       </video>
-      {/* <Popup /> */}
+      <Popup />
       <div className="sticky w-full h-full top-0 ">
         <Nav_Component />
       </div>
