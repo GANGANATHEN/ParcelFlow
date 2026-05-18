@@ -36,12 +36,12 @@ const Ballanim = () => {
           <BallsCanvas
             startFall={ballSectionVisible}
             exchangeRef={exchangeRef}
-            className="h-full w-full"
+            className="h-full w-full "
           />
         </div>
 
         {/* GRADIENT OVERLAY */}
-        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/70 z-[1]" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/70 z-0" />
 
         {/* CONTENT */}
         <div className="relative flex min-h-screen flex-col items-center justify-center px-5">
@@ -68,7 +68,7 @@ const Ballanim = () => {
           {/* EXCHANGE CARD */}
           <div
             ref={exchangeRef}
-            className="relative flex w-full max-w-md flex-col items-center gap-5 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-2xl"
+            className="z-10 relative flex w-full max-w-md flex-col items-center gap-5 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-2xl"
           >
             {/* TOP */}
             <div className="w-full rounded-2xl border border-white/10 bg-white/3] p-5">
@@ -110,7 +110,9 @@ const Ballanim = () => {
       </section>
 
       {/* NEXT SECTION */}
-      <section className="flex min-h-screen items-center justify-center bg-[#f4f4f5] px-5">
+      <section
+        className="flex min-h-screen items-center justify-center bg-[#f4f4f5] px-5"
+      >
         <div className="max-w-3xl text-center">
           <p className="mb-4 text-sm uppercase tracking-[0.3em] text-black/40">
             Scroll Section
