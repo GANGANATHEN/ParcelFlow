@@ -44,7 +44,7 @@ export const Buy_Crypto_Data = [
     data: [
       {
         name: "Page A",
-        pv: 3500,
+        pv: 4700,
       },
       {
         name: "Page B",
@@ -52,7 +52,7 @@ export const Buy_Crypto_Data = [
       },
       {
         name: "Page C",
-        pv: 4800,
+        pv: 2800,
       },
       {
         name: "Page D",
@@ -60,15 +60,15 @@ export const Buy_Crypto_Data = [
       },
       {
         name: "Page E",
-        pv: 4300,
+        pv: 2300,
       },
       {
         name: "Page F",
-        pv: 4000,
+        pv: 2000,
       },
       {
         name: "Page G",
-        pv: 4900,
+        pv: 1200,
       },
     ],
   },
@@ -82,7 +82,7 @@ export const Buy_Crypto_Data = [
     data: [
       {
         name: "Page A",
-        pv: 3500,
+        pv: 5500,
       },
       {
         name: "Page B",
@@ -94,7 +94,7 @@ export const Buy_Crypto_Data = [
       },
       {
         name: "Page D",
-        pv: 3000,
+        pv: 8000,
       },
       {
         name: "Page E",
@@ -137,6 +137,44 @@ export const Buy_Crypto_Data = [
       {
         name: "Page E",
         pv: 4300,
+      },
+      {
+        name: "Page F",
+        pv: 4000,
+      },
+      {
+        name: "Page G",
+        pv: 4300,
+      },
+    ],
+  },
+  {
+    id: 3,
+    coinImg: Coin1,
+    value: "-2.34%",
+    sortName: "BTC",
+    name: "Ethereum",
+    price: 0.42112,
+    data: [
+      {
+        name: "Page A",
+        pv: 900,
+      },
+      {
+        name: "Page B",
+        pv: 1500,
+      },
+      {
+        name: "Page C",
+        pv: 2500,
+      },
+      {
+        name: "Page D",
+        pv: 3000,
+      },
+      {
+        name: "Page E",
+        pv: 3300,
       },
       {
         name: "Page F",

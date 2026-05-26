@@ -1,44 +1,60 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Nav_Component from "./coinbarter/page";
 // import GlassToast from "./border/page";
 import LiquidGlass from "./try/glass";
 import Popup from "./popup/popup";
+import CloudBackground from "./bg/cloudBg";
 
-const page = () => {
+const Page = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="h-dvh w-full relative overflow-y-auto inset-0 overflow-hidden bg-cover bg-center">
-      {/* background video border*/}
-      <video
-        // autoPlay
-        loop
-        // onDurationChange={0.3}
-        muted
-        playsInline
-        className=" absolute inset-0 w-full h-full object-cover
-         transition-opacity duration-600 -z-1"
-      >
-        <source src="/image/video.mp4" type="video/mp4" />
-      </video>
-      <Popup />
-      <div className="sticky w-full h-full top-0 ">
-        <Nav_Component />
-      </div>
-
-      <div className="overflow-hidden overflow-y-auto">
-        <div className="h-dvh flex flex-col justify-center items-center px-5">
-          <h1 className="text-white font-bold text-2xl width-[70%]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </h1>
-          <p className="text-white">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-            laborum doloremque aliquid quod expedita id accusamus cum illum
-            repudiandae amet nihil aut voluptates, neque veritatis. Doloribus
-            deleniti sed veniam voluptate!
-          </p>
+    <>
+      <div className="h-dvh w-full relative inset-0 overflow-hidden bg-cover bg-center">
+        <div className="z-999">
+          <CloudBackground />
         </div>
-        <div className="h-dvh flex flex-col justify-center items-center px-5 inset-0 overflow-hidden bg-[url('/image/2.jpg')] bg-cover bg-center">
-          <div>
+        {/* background video border*/}
+        <video
+          // autoPlay
+          loop
+          // onDurationChange={0.3}
+          muted
+          playsInline
+          className=" absolute opacity-0 inset-0 w-full h-full object-cover
+         transition-opacity duration-600 -z-1"
+        >
+          <source src="/image/video.mp4" type="video/mp4" />
+        </video>
+        <button
+          onClick={() => setOpen(true)}
+          className="absolute top-10 z-4 px-6 py-3 bg-white text-black rounded-xl"
+        >
+          Open Popup
+        </button>
+        {/* popup */}
+        {open && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="relative z-50">
+              {/* close button */}
+              <button
+                onClick={() => setOpen(false)}
+                className="fixed top-5 left-5 z-9999
+  w-10 h-10 rounded-full bg-white text-black
+  border-4 border-red-400"
+              >
+                ✕
+              </button>
+
+              <Popup />
+            </div>
+          </div>
+        )}
+        <div className="sticky w-full hidden h-full top-0 ">
+          <Nav_Component />
+        </div>
+        <div className="overflow-hidden hidden overflow-y-auto">
+          <div className="h-dvh flex flex-col justify-center items-center px-5">
             <h1 className="text-white font-bold text-2xl width-[70%]">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </h1>
@@ -49,22 +65,34 @@ const page = () => {
               Doloribus deleniti sed veniam voluptate!
             </p>
           </div>
-          {/* <div className="fixed z-10 top-120 mr-60">
+          <div className="h-dvh flex flex-col justify-center items-center px-5 inset-0 overflow-hidden bg-[url('/image/2.jpg')] bg-cover bg-center">
+            <div>
+              <h1 className="text-white font-bold text-2xl width-[70%]">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </h1>
+              <p className="text-white">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dignissimos laborum doloremque aliquid quod expedita id
+                accusamus cum illum repudiandae amet nihil aut voluptates, neque
+                veritatis. Doloribus deleniti sed veniam voluptate!
+              </p>
+            </div>
+            {/* <div className="fixed z-10 top-120 mr-60">
             <LiquidGlass status="error" />
           </div> */}
-        </div>
-        <div className="h-dvh flex flex-col justify-center items-center px-5">
-          <h1 className="text-white font-bold text-2xl width-[70%]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </h1>
-          <p className="text-white">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-            laborum doloremque aliquid quod expedita id accusamus cum illum
-            repudiandae amet nihil aut voluptates, neque veritatis. Doloribus
-            deleniti sed veniam voluptate!
-          </p>
-        </div>
-        {/* <div>
+          </div>
+          <div className="h-dvh flex flex-col justify-center items-center px-5">
+            <h1 className="text-white font-bold text-2xl width-[70%]">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </h1>
+            <p className="text-white">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Dignissimos laborum doloremque aliquid quod expedita id accusamus
+              cum illum repudiandae amet nihil aut voluptates, neque veritatis.
+              Doloribus deleniti sed veniam voluptate!
+            </p>
+          </div>
+          {/* <div>
           <div className="2xl:mt-[69px] relative mt-6 md:mt-10 xl:mt-12 overflow-hidden map-section z-20">
              onClick={() => setActiveMap(true)} onMouseLeave={() => setActiveMap(false)}
             <iframe
@@ -78,9 +106,10 @@ const page = () => {
             ></iframe>
           </div>
         </div> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default page;
+export default Page;

@@ -1,0 +1,73 @@
+<svg className="absolute hidden inset-0 w-full h-full pointer-events-none z-0">
+                  <defs>
+                    <filter
+                      id="strokeBlur"
+                      x="-50%"
+                      y="-50%"
+                      width="200%"
+                      height="200%"
+                    >
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" />
+                    </filter>
+
+                    <radialGradient
+                      id={`spotlight-${item.id}`}
+                      cx="50%"
+                      cy="50%"
+                      r="160%"
+                    >
+                      <stop offset="0%" stopColor="#000000" stopOpacity={0} />
+                      <stop offset="30%" stopColor="#000000" stopOpacity={1} />
+
+                      <stop
+                        offset="100%"
+                        stopColor="#000000"
+                        stopOpacity={0.4}
+                      />
+                    </radialGradient>
+
+                    <rect
+                      x="0"
+                      y="0"
+                      width="100"
+                      height="100"
+                      fill={`url(#spotlight-${item.id})`}
+                    />
+
+                    <radialGradient
+                      id="grid1"
+                      cx="50%"
+                      cy="50%"
+                      r="50%"
+                      fx="50%"
+                      fy="50%"
+                    >
+                      <stop offset="0%" stopColor="#1b193d" />
+                      <stop offset="100%" stopColor="#23214c" />
+                    </radialGradient>
+
+                    <pattern
+                      id={`gridPattern-${item.id}`}
+                      width="36"
+                      height="16"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <rect width="32" height="12" rx="3" fill="url(#grid1)" />
+                    </pattern>
+                  </defs>
+
+                  {/* Adiyila Grid Box */}
+                  <rect
+                    width="100%"
+                    height="100%"
+                    fill={`url(#gridPattern-${item.id})`}
+                    clipPath={`url(#pv-clip-${item.id})`}
+                  />
+                  <rect
+                    x="0"
+                    y="0"
+                    width="100%"
+                    height="100%"
+                    fill={`url(#spotlight-${item.id})`}
+                  />
+                </svg>

@@ -4,14 +4,9 @@ import GlassSurface from "@/components/GlassSurface";
 const Popup = () => {
   return (
     <div>
-      {/* <div
-        className="relative h-screen overflow-hidden bg-black/20 backdrop-blur-md 
-      z-100 border border-white/20"
-      
-      ></div> */}
 
       {/* <GlassSurface /> */}
-      <div className="fixed inset-0 h-screen z-100 ">
+      <div className="fixed inset-0 h-screen z-50 ">
         {/* blur */}
         <div className="absolute inset-0 bg-black/20 backdrop-blur-[7px]" />
 

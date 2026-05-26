@@ -18,6 +18,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  /* Ithu thaan namma custom colors */
+  --color-deep-purple-900: #1a0033;
+  --color-magenta-400: #ff66ff;
+  --color-magenta-500: #ff00ff;
+  --color-magenta-950: #100010;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -26,19 +34,20 @@
 }
 
 body {
-  background: black;
+  /* background: black; */
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .no-scrollbar {
+  overflow-y: auto;
+
   -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-color: transparent transparent; /* Firefox fallback for colors */
+  scrollbar-width: none; /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
-  overflow-y: auto;
+  display: none; /* Chrome, Safari */
 }
 
 /* .heading_font-size {

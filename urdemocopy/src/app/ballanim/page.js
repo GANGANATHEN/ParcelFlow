@@ -29,6 +29,24 @@ const Ballanim = () => {
 
   return (
     <>
+      {/* NEXT SECTION */}
+      <section className="flex min-h-screen items-center justify-center bg-[#f4f4f5] px-5">
+        <div className="max-w-3xl text-center">
+          <p className="mb-4 text-sm uppercase tracking-[0.3em] text-black/40">
+            Scroll Section
+          </p>
+
+          <h2 className="text-5xl font-semibold tracking-tight text-black md:text-7xl">
+            Smooth Physics
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-black/60">
+            The floating balls continue naturally with collision detection, drag
+            interactions, gravity simulation, and optimized rendering for smooth
+            animation performance.
+          </p>
+        </div>
+      </section>
       {/* HERO SECTION */}
       <section className="ball-section relative min-h-screen w-full overflow-hidden bg-[#050816] text-white">
         {/* BALL CANVAS */}
@@ -41,7 +59,10 @@ const Ballanim = () => {
         </div>
 
         {/* GRADIENT OVERLAY */}
-        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/70 z-0" />
+        <div
+          className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent 
+        to-black/70 z-0"
+        />
 
         {/* CONTENT */}
         <div className="relative flex min-h-screen flex-col items-center justify-center px-5">
@@ -68,7 +89,8 @@ const Ballanim = () => {
           {/* EXCHANGE CARD */}
           <div
             ref={exchangeRef}
-            className="z-10 relative flex w-full max-w-md flex-col items-center gap-5 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-2xl"
+            className="z-10 relative flex w-full max-w-md flex-col items-center gap-5 
+            rounded-2xll border border-white/10 bg-white/5 p-6 backdrop-blur-2xl"
           >
             {/* TOP */}
             <div className="w-full rounded-2xl border border-white/10 bg-white/3] p-5">
@@ -110,9 +132,7 @@ const Ballanim = () => {
       </section>
 
       {/* NEXT SECTION */}
-      <section
-        className="flex min-h-screen items-center justify-center bg-[#f4f4f5] px-5"
-      >
+      <section className="flex min-h-screen items-center justify-center bg-[#f4f4f5] px-5">
         <div className="max-w-3xl text-center">
           <p className="mb-4 text-sm uppercase tracking-[0.3em] text-black/40">
             Scroll Section

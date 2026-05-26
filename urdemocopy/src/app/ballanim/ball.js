@@ -27,9 +27,7 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
     const FLOOR_FRICTION = 0.82;
 
-    const BOUNCE = 0.68;
-
-    const REST_THRESHOLD = 0.08;
+    const BOUNCE = 0.8;
 
     const DRAG_STIFFNESS = 0.22;
 
@@ -51,6 +49,11 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
       canvas.height = canvas.offsetHeight * dpr;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      /* WAKE UP BALLS ON RESIZE TO FIX BOUNDARIES */
+      ballsRef.current.forEach((b) => {
+        b.sleeping = false;
+      });
     };
 
     resize();
@@ -88,15 +91,15 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
         radius: BALL_SIZE / 2,
 
-        x: col * (BALL_SIZE + 8) + BALL_SIZE / 2 + Math.random() * 5,
+        x: col * (BALL_SIZE + 8) + BALL_SIZE / 2 + (Math.random() - 0.5) * 40,
 
-        y: -(row * (BALL_SIZE + 10)) - BALL_SIZE,
+        y: -(row * (BALL_SIZE + 15)) - BALL_SIZE - Math.random() * 200,
 
-        vx: 0,
+        vx: (Math.random() - 0.5) * 4,
 
-        vy: 0,
+        vy: Math.random() * 12,
 
-        rotation: 0,
+        rotation: Math.random() * Math.PI * 2,
 
         angularVelocity: 0,
 
@@ -178,8 +181,6 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
       ball.lastPointerY = y;
 
-      /* HERO SECTION leave panna koodathu */
-
       ball.targetX = Math.max(
         ball.radius,
         Math.min(canvas.offsetWidth - ball.radius, x),
@@ -190,13 +191,9 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
         Math.min(canvas.offsetHeight - ball.radius, y),
       );
 
-      /* velocity */
-
       ball.vx += dx * 0.22;
 
       ball.vy += dy * 0.22;
-
-      /* clamp */
 
       ball.vx = Math.max(-MAX_DRAG_SPEED, Math.min(MAX_DRAG_SPEED, ball.vx));
 
@@ -236,11 +233,9 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
       const ny = dy / dist;
 
-      /* push apart */
-
       const overlap = minDist - dist;
 
-      const push = overlap * 0.5;
+      const push = overlap * 0.45;
 
       a.x -= nx * push;
 
@@ -250,8 +245,6 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
       b.y += ny * push;
 
-      /* velocity */
-
       const rvx = b.vx - a.vx;
 
       const rvy = b.vy - a.vy;
@@ -260,7 +253,9 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
       if (velAlongNormal > 0) return;
 
-      const impulse = -(1 + 0.35) * velAlongNormal * 0.5;
+      const currentBounce = Math.abs(velAlongNormal) < 1.0 ? 0 : 0.9;
+
+      const impulse = -(1 + currentBounce) * velAlongNormal * 0.5;
 
       const ix = impulse * nx;
 
@@ -274,9 +269,28 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
       b.vy += iy;
 
-      a.sleeping = false;
+      const tx = -ny;
 
-      b.sleeping = false;
+      const ty = nx;
+
+      const tangentVel = rvx * tx + rvy * ty;
+
+      const frictionImpulse = -tangentVel * 0.05;
+
+      a.vx -= tx * frictionImpulse;
+
+      a.vy -= ty * frictionImpulse;
+
+      b.vx += tx * frictionImpulse;
+
+      b.vy += ty * frictionImpulse;
+
+      /* Wake up balls easily if they intersect too much to prevent sinking */
+      if (Math.abs(velAlongNormal) > 0.1 || overlap > 0.1) {
+        a.sleeping = false;
+
+        b.sleeping = false;
+      }
     };
 
     //  BLOCK COLLISION
@@ -295,8 +309,6 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
       const bottom = top + blockRect.height;
 
-      /* expanded bounds */
-
       const expandedLeft = left - b.radius;
 
       const expandedRight = right + b.radius;
@@ -304,8 +316,6 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
       const expandedTop = top - b.radius;
 
       const expandedBottom = bottom + b.radius;
-
-      /* inside collision zone */
 
       if (
         b.x > expandedLeft &&
@@ -323,26 +333,32 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
         const min = Math.min(fromLeft, fromRight, fromTop, fromBottom);
 
-        //  TOP
         if (min === fromTop) {
           b.y = expandedTop;
 
           if (b.vy > 0) {
-            b.vy *= -0.45;
+            if (b.vy < 0.5) {
+              b.vy = 0;
+            } else {
+              b.vy *= -0.8;
+            }
           }
 
           b.vx *= 0.98;
 
-          /* roll only on top */
+          if (Math.abs(b.vx) < 0.1) {
+            b.vx = 0;
+          }
 
-          if (Math.abs(b.vx) > 0.05) {
+          if (b.vx === 0 && b.vy === 0) {
+            b.sleeping = true;
+          }
+
+          if (Math.abs(b.vx) > 0.15) {
             b.rotation += b.vx * 0.015;
           }
         } else if (min === fromBottom) {
-          //   BOTTOM
           b.y = expandedBottom;
-
-          /* instant drop */
 
           if (b.dragging) {
             b.dragging = false;
@@ -356,10 +372,7 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
             b.vy *= -0.45;
           }
         } else if (min === fromLeft) {
-          //    LEFT
           b.x = expandedLeft;
-
-          /* instant drop */
 
           if (b.dragging) {
             b.dragging = false;
@@ -373,10 +386,7 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
             b.vx *= -0.7;
           }
         } else {
-          //   RIGHT
           b.x = expandedRight;
-
-          /* instant drop */
 
           if (b.dragging) {
             b.dragging = false;
@@ -407,7 +417,6 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
       for (let step = 0; step < SUBSTEPS; step++) {
         /* collisions */
-
         for (let k = 0; k < 2; k++) {
           for (let i = 0; i < balls.length; i++) {
             for (let j = i + 1; j < balls.length; j++) {
@@ -417,12 +426,8 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
         }
 
         /* update */
-
         for (const b of balls) {
-          if (b.sleeping && !b.dragging) continue;
-
           /* dragging */
-
           if (b.dragging) {
             const dx = b.targetX - b.x;
 
@@ -440,17 +445,29 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
             b.y += b.vy;
 
-            /* top free */
-
             if (b.y < -b.radius) {
               b.y = -b.radius;
             }
 
-            /* floor mela iruntha mattum roll */
+            if (b.x <= b.radius) {
+              b.x = b.radius;
+
+              b.dragging = false;
+
+              activeBallRef.current = null;
+            }
+
+            if (b.x >= W - b.radius) {
+              b.x = W - b.radius;
+
+              b.dragging = false;
+
+              activeBallRef.current = null;
+            }
 
             const touchingFloor = b.y >= H - b.radius - 1;
 
-            if (touchingFloor && Math.abs(b.vx) > 0.05) {
+            if (touchingFloor && Math.abs(b.vx) > 0.15) {
               b.rotation += b.vx * 0.015;
             }
 
@@ -459,30 +476,33 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
             continue;
           }
 
-          /* physics */
+          /* physics (Only apply if NOT sleeping) */
+          if (!b.sleeping) {
+            if (startFall) {
+              b.vy += GRAVITY;
+            }
 
-          if (startFall) {
-            b.vy += GRAVITY;
+            b.vx *= AIR;
+
+            b.vy *= AIR;
+
+            b.x += b.vx;
+
+            b.y += b.vy;
           }
 
-          b.vx *= AIR;
-
-          b.vy *= AIR;
-
-          b.x += b.vx;
-
-          b.y += b.vy;
-
-          /* ONLY floor/block mela iruntha rotate */
+          /* 
+             BOUNDARIES - Apply strictly for ALL balls 
+             (Sleeping or not) to prevent overflow 
+          */
 
           const touchingFloor = b.y >= H - b.radius - 1;
 
-          if (touchingFloor && Math.abs(b.vx) > 0.03) {
+          if (touchingFloor && Math.abs(b.vx) > 0.15) {
             b.rotation += b.vx * 0.015;
           }
 
           /* walls */
-
           if (b.x < b.radius) {
             b.x = b.radius;
 
@@ -496,7 +516,6 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
           }
 
           /* top limit */
-
           if (b.y < -b.radius) {
             b.y = -b.radius;
 
@@ -505,12 +524,11 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
             }
           }
 
-          /* floor */
-
-          if (b.y > H - b.radius) {
+          /* floor STRICT CLAMP */
+          if (b.y >= H - b.radius) {
             b.y = H - b.radius;
 
-            if (Math.abs(b.vy) < 0.35) {
+            if (Math.abs(b.vy) < 0.5) {
               b.vy = 0;
             } else {
               b.vy *= -BOUNCE;
@@ -518,32 +536,23 @@ export default function BallsCanvas({ startFall, exchangeRef }) {
 
             b.vx *= FLOOR_FRICTION;
 
-            if (Math.abs(b.vx) < 0.03) {
+            if (Math.abs(b.vx) < 0.1) {
               b.vx = 0;
             }
 
-            if (
-              Math.abs(b.vx) < REST_THRESHOLD &&
-              Math.abs(b.vy) < REST_THRESHOLD
-            ) {
-              b.vx = 0;
-
-              b.vy = 0;
-
-              b.angularVelocity = 0;
-
+            if (b.vx === 0 && b.vy === 0) {
               b.sleeping = true;
+            } else {
+              b.sleeping = false;
             }
           }
 
           /* block */
-
           solveBlockCollision(b);
         }
       }
 
       /* draw */
-
       for (const b of balls) {
         ctx.save();
 
