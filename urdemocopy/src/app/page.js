@@ -1,114 +1,101 @@
 "use client";
 import React, { useState } from "react";
 import Nav_Component from "./coinbarter/page";
-// import GlassToast from "./border/page";
-import LiquidGlass from "./try/glass";
+// import LiquidGlass from "./try/glass";
 import Popup from "./popup/popup";
-import CloudBackground from "./bg/cloudBg";
+// import CloudBackground from "./bg/cloudBg";
 
 const Page = () => {
   const [open, setOpen] = useState(false);
+
   return (
-    <>
-      <div className="h-dvh w-full relative inset-0 overflow-hidden bg-cover bg-center">
-        <div className="z-999">
-          <CloudBackground />
+    <div className="relative h-dvh w-full overflow-hidden bg-black">
+      <video
+        // autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 z-0 h-full w-full object-cover"
+      >
+        <source src="/image/video.mp4" type="video/mp4" />
+      </video>
+
+      {/* Floating Buttons & Nav (z-20) */}
+      <div className="absolute top-0 left-0 w-full z-20">
+        <div className="hidden w-full">
+          <Nav_Component />
         </div>
-        {/* background video border*/}
-        <video
-          // autoPlay
-          loop
-          // onDurationChange={0.3}
-          muted
-          playsInline
-          className=" absolute opacity-0 inset-0 w-full h-full object-cover
-         transition-opacity duration-600 -z-1"
-        >
-          <source src="/image/video.mp4" type="video/mp4" />
-        </video>
         <button
           onClick={() => setOpen(true)}
-          className="absolute top-10 z-4 px-6 py-3 bg-white text-black rounded-xl"
+          className="absolute left-10 top-10 rounded-xl bg-white px-6 py-3 text-black shadow-lg hover:bg-gray-100 transition-colors"
         >
           Open Popup
         </button>
-        {/* popup */}
-        {open && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="relative z-50">
-              {/* close button */}
-              <button
-                onClick={() => setOpen(false)}
-                className="fixed top-5 left-5 z-9999
-  w-10 h-10 rounded-full bg-white text-black
-  border-4 border-red-400"
-              >
-                ✕
-              </button>
-
-              <Popup />
-            </div>
-          </div>
-        )}
-        <div className="sticky w-full hidden h-full top-0 ">
-          <Nav_Component />
-        </div>
-        <div className="overflow-hidden hidden overflow-y-auto">
-          <div className="h-dvh flex flex-col justify-center items-center px-5">
-            <h1 className="text-white font-bold text-2xl width-[70%]">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </h1>
-            <p className="text-white">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Dignissimos laborum doloremque aliquid quod expedita id accusamus
-              cum illum repudiandae amet nihil aut voluptates, neque veritatis.
-              Doloribus deleniti sed veniam voluptate!
-            </p>
-          </div>
-          <div className="h-dvh flex flex-col justify-center items-center px-5 inset-0 overflow-hidden bg-[url('/image/2.jpg')] bg-cover bg-center">
-            <div>
-              <h1 className="text-white font-bold text-2xl width-[70%]">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </h1>
-              <p className="text-white">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Dignissimos laborum doloremque aliquid quod expedita id
-                accusamus cum illum repudiandae amet nihil aut voluptates, neque
-                veritatis. Doloribus deleniti sed veniam voluptate!
-              </p>
-            </div>
-            {/* <div className="fixed z-10 top-120 mr-60">
-            <LiquidGlass status="error" />
-          </div> */}
-          </div>
-          <div className="h-dvh flex flex-col justify-center items-center px-5">
-            <h1 className="text-white font-bold text-2xl width-[70%]">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </h1>
-            <p className="text-white">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Dignissimos laborum doloremque aliquid quod expedita id accusamus
-              cum illum repudiandae amet nihil aut voluptates, neque veritatis.
-              Doloribus deleniti sed veniam voluptate!
-            </p>
-          </div>
-          {/* <div>
-          <div className="2xl:mt-[69px] relative mt-6 md:mt-10 xl:mt-12 overflow-hidden map-section z-20">
-             onClick={() => setActiveMap(true)} onMouseLeave={() => setActiveMap(false)}
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15546.977342259324!2d80.2528158289275!3d13.05193902097606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5267ab159f64e9%3A0xb7743db9d152516b!2sIMUII%20TECHNOLOGY%20PRIVATE%20LIMITED!5e0!3m2!1sen!2sin!4v1778840228585!5m2!1sen!2sin%22"
-              width="100%"
-              className={`2xl:h-[400px] max-xs:h-[170px] xs:h-[180px] sm:h-[230px] lg:h-[280px] xl:h-[300px]  3xl:rounded-[40px] rounded-[14px] md:rounded-[20px]
-            }`}
-              allowFullScreen=""
-              loading="eager"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-        </div> */}
-        </div>
       </div>
-    </>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          {/* Close Button */}
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute left-10 top-10 z-9999 flex h-12 w-12 items-center justify-center rounded-full border-4 border-red-400 bg-white text-xl font-bold text-black hover:bg-red-50 transition-all"
+          >
+            ✕
+          </button>
+
+          <div className="relative z-50 w-full max-w-4xl">
+            <Popup />
+          </div>
+        </div>
+      )}
+
+      {/* 4. Scrollable Content Layer (z-10) */}
+      <div className="relative z-10 h-full w-full hidden overflow-y-auto scroll-smooth">
+        {/* Section 1 */}
+        <section className="flex h-dvh flex-col items-center justify-center px-5 text-center">
+          <div className="max-w-3xl">
+            <h1 className="text-2xl font-bold text-white md:text-4xl">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </h1>
+            <p className="mt-4 text-gray-200">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Dignissimos laborum doloremque aliquid quod expedita id accusamus
+              cum illum repudiandae amet nihil aut voluptates, neque veritatis.
+              Doloribus deleniti sed veniam voluptate!
+            </p>
+          </div>
+        </section>
+
+        {/* Section 2 (With Background Image) */}
+        <section className="flex h-dvh flex-col items-center justify-center bg-[url('/image/2.jpg')] bg-cover bg-center px-5 text-center">
+          <div className="max-w-3xl rounded-xl bg-black/50 p-8 backdrop-blur-md">
+            <h1 className="text-2xl font-bold text-white md:text-4xl">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </h1>
+            <p className="mt-4 text-gray-200">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Dignissimos laborum doloremque aliquid quod expedita id accusamus
+              cum illum repudiandae amet nihil aut voluptates, neque veritatis.
+              Doloribus deleniti sed veniam voluptate!
+            </p>
+          </div>
+        </section>
+
+        {/* Section 3 */}
+        <section className="flex h-dvh flex-col items-center justify-center px-5 text-center">
+          <div className="max-w-3xl">
+            <h1 className="text-2xl font-bold text-white md:text-4xl">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </h1>
+            <p className="mt-4 text-gray-200">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Dignissimos laborum doloremque aliquid quod expedita id accusamus
+              cum illum repudiandae amet nihil aut voluptates, neque veritatis.
+              Doloribus deleniti sed veniam voluptate!
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 };
 

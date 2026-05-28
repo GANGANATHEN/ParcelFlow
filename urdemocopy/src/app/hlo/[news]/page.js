@@ -108,13 +108,13 @@ const Buy_Crypto = ({ item }) => {
           </p>
         </div>
 
-        <main className="grid grid-cols-4 grid-rows-4 gap-[83px] pt-12">
+        <main className="grid grid-cols-4 grid-rows-4 gap-20.75 pt-12">
           {displayData.map((item) => (
             <div
               key={item.id}
               onMouseLeave={handleLeave}
               onMouseEnter={() => handleMouseEnter(item.id)}
-              className={`rounded-[47px] w-full h-[298px] bg-[#0602131A] shadow-[inset_0_0_28px_0_#d3ed05,inset_0px_4px_6px_3px_#fff,inset_0_0_3px_0_rgba(0,0,0,0.25)] pt-9 pb-[26px] relative`}
+              className={`rounded-[47px] w-full h-74.5 bg-[#0602131A] shadow-[inset_0_0_28px_0_#d3ed05,inset_0px_4px_6px_3px_#fff,inset_0_0_3px_0_rgba(0,0,0,0.25)] pt-9 pb-[26px] relative`}
             >
               <div className="flex justify-between px-6">
                 <div className="flex gap-1.5 items-center">
@@ -154,7 +154,7 @@ const Buy_Crypto = ({ item }) => {
               </p>
 
               {/* graph */}
-              <div className="-mt-7 relative w-full h-[200px] overflow-hidden -z-1 rounded-b-[20px]">
+              <div className="-mt-7 relative w-full h-50 overflow-hidden -z-1 rounded-b-[20px]">
                 <AreaChart
                   className="gap-0.5 w-full rounded-b-[20px] outline-none! pointer-events-auto cursor-pointer overflow-hidden!"
                   style={{
@@ -341,6 +341,42 @@ const Buy_Crypto = ({ item }) => {
                       <stop offset="20%" stopColor="#ffbff6" stopOpacity="1" />
                       <stop offset="80%" stopColor="#fff2fe" stopOpacity="1" />
                     </linearGradient>
+                    {/* Hover Glow Gradient */}
+                    <filter
+                      id="pureShadow"
+                      x="-100%"
+                      y="-100%"
+                      width="300%"
+                      height="300%"
+                    >
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+                    </filter>
+                    <linearGradient
+                      id="hoverGlow1"
+                      x1="0%"
+                      y1="100%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop offset="0%" stopColor="#6FBEDA" stopOpacity="0.7" />
+                      <stop offset="5%" stopColor="#CB3D94" stopOpacity="0.8" />
+                      <stop
+                        offset="40%"
+                        stopColor="#CB3DC4"
+                        stopOpacity="0.6"
+                      />
+                      <stop
+                        offset="85%"
+                        stopColor="#CB3D94"
+                        stopOpacity="0.3"
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor="#F4FF05"
+                        stopOpacity="0.001"
+                      />
+                      <stop offset="100%" stopColor="#3DFFE6" stopOpacity="0" />
+                    </linearGradient>
 
                     {/* box color */}
                     <radialGradient
@@ -364,7 +400,7 @@ const Buy_Crypto = ({ item }) => {
                       <rect
                         width="32"
                         height="12"
-                        rx="3"
+                        rx="2"
                         fill="#23215C"
                         brightness={0.8}
                         //  fill="url(#grid1)"
@@ -381,6 +417,15 @@ const Buy_Crypto = ({ item }) => {
                     curve={curveMonotoneX}
                     activeDot={({ cx, cy }) => (
                       <g>
+                        <ellipse
+                          cx={cx}
+                          cy={cy}
+                          rx={25}
+                          ry={25}
+                          fill="url(#hoverGlow1)"
+                          filter="url(#pureShadow)"
+                          opacity={1}
+                        />
                         <circle
                           cx={cx}
                           cy={cy}
@@ -388,7 +433,7 @@ const Buy_Crypto = ({ item }) => {
                           fill="none"
                           stroke="url(#active1)"
                           strokeWidth={30}
-                          opacity={0.4}
+                          opacity={0.2}
                         />
                         <circle cx={cx} cy={cy} r={12} fill="url(#active2)" />
                         <circle cx={cx} cy={cy} r={7} fill="url(#active3)" />
