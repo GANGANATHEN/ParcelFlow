@@ -100,6 +100,8 @@ const InvadersClub = () => {
   const smallRef1 = useRef(null);
   const smallRef2 = useRef(null);
   const smallRef3 = useRef(null);
+  const smallArrow1Ref = useRef(null);
+  const smallArrow2Ref = useRef(null);
 
   // draw-line-animation funtionality using gsap
   const faqData = [
@@ -136,7 +138,62 @@ const InvadersClub = () => {
   //smallest length draw-line animation
   useGSAP(
     () => {
-      const tl = gsap.timeline({
+      // SVG1
+      const tl1 = gsap.timeline();
+
+      tl1.fromTo(
+        smallRef1.current,
+        {
+          drawSVG: "100% 100%",
+        },
+        {
+          drawSVG: "100% 0%",
+          duration: 1,
+          ease: "none",
+        },
+      );
+
+      tl1.fromTo(
+        smallArrow1Ref.current,
+        {
+          drawSVG: "0% 0%",
+        },
+        {
+          drawSVG: "0% 100%",
+          duration: 0.3,
+          ease: "none",
+        },
+      );
+
+      // SVG2
+      const tl2 = gsap.timeline();
+
+      tl2.fromTo(
+        smallRef2.current,
+        {
+          drawSVG: "100% 100%",
+        },
+        {
+          drawSVG: "100% 0%",
+          duration: 1,
+          ease: "none",
+        },
+      );
+
+      tl2.fromTo(
+        smallArrow2Ref.current,
+        {
+          drawSVG: "0% 0%",
+        },
+        {
+          drawSVG: "0% 100%",
+          duration: 0.3,
+          ease: "none",
+        },
+      );
+
+      // Master timeline controlled by scroll
+      const master = gsap.timeline({
         scrollTrigger: {
           trigger: smallSectionRef.current,
           start: "top top",
@@ -146,39 +203,20 @@ const InvadersClub = () => {
         },
       });
 
-      tl.fromTo(
-        smallRef1.current,
-        {
-          drawSVG: "0% 0%",
-        },
-        {
-          drawSVG: "0% 100%",
-          ease: "linear",
-          duration: 1,
-        },
-        0,
-      );
+      // SVG1 & SVG2 start
+      master.add(tl1, 0);
+      master.add(tl2, 0);
 
-      tl.fromTo(
-        smallRef2.current,
-        {
-          drawSVG: "0% 0%",
-        },
-        {
-          drawSVG: "0% 100%",
-          ease: "linear",
-          duration: 1,
-        },
-        0,
-      );
-
-      tl.fromTo(
+      // SVG3
+      master.fromTo(
         smallRef3.current,
-        { drawSVG: "0% 0%" },
+        {
+          drawSVG: "0% 0%",
+        },
         {
           drawSVG: "-100% 0%",
-          ease: "linear",
           duration: 1,
+          ease: "none",
         },
         0,
       );
@@ -316,7 +354,14 @@ const InvadersClub = () => {
                   >
                     <path
                       ref={smallRef1}
-                      d="M40.0326 0.292969C62.0326 30.793 47.0326 47.293 29.5326 43.293C12.0326 39.293 -22.9674 17.793 24.0326 14.793C61.6326 12.393 84.0317 23.4596 90.5312 29.293M90.5312 29.293L85.0312 14.793M90.5312 29.293L76.5312 32.293"
+                      transform="scale(-1,1) translate(-WIDTH 0)"
+                      d="M89.5 28.4298C81.8743 22.4404 59.8505 12.5062 24.0326 14.7925C-22.9674 17.7925 12.0326 39.2925 29.5326 43.2925C47.0326 47.2925 62.0326 30.7925 40.0326 0.29248"
+                      stroke="#D3ED05"
+                      strokeWidth="2.5"
+                    />
+                    <path
+                      ref={smallArrow1Ref}
+                      d="M89.5 28.4298C89.8794 28.7278 90.2232 29.016 90.5312 29.2925M85.0312 14.7925L90.5312 29.2925L76.5312 32.2925"
                       stroke="#D3ED05"
                       strokeWidth="2.5"
                     />
@@ -337,7 +382,14 @@ const InvadersClub = () => {
                   >
                     <path
                       ref={smallRef2}
-                      d="M0.0742188 35.6509C42.4742 42.0509 46.4076 19.9843 43.0742 8.15093C38.7409 4.15093 27.9742 -2.64907 19.5742 2.15093C9.07422 8.15093 9.07422 37.1484 26.0742 44.6484C39.6742 50.6484 83.4076 18.8168 103.574 2.15093M103.574 2.15093H83.0742M103.574 2.15093V35.6509"
+                      transform="scale(-1,1) translate(-WIDTH 0)"
+                      d="M102.755 2.82559C82.2466 19.659 39.4929 50.5684 26.0742 44.6484C9.07422 37.1484 9.07422 8.15093 19.5742 2.15093C27.9742 -2.64907 38.7409 4.15093 43.0742 8.15093C46.4076 19.9843 42.4742 42.0509 0.0742188 35.6509"
+                      stroke="#D3ED05"
+                      strokeWidth="2.5"
+                    />
+                    <path
+                      ref={smallArrow2Ref}
+                      d="M102.755 2.8256C103.032 2.5981 103.305 2.37317 103.574 2.15094M83.0742 2.15094H103.574V35.6509"
                       stroke="#D3ED05"
                       strokeWidth="2.5"
                     />

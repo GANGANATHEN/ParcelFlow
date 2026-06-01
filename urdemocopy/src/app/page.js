@@ -32,6 +32,7 @@ const Page = () => {
           Open Popup
         </button>
       </div>
+
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
           {/* Close Button */}
@@ -48,7 +49,7 @@ const Page = () => {
         </div>
       )}
 
-      {/* 4. Scrollable Content Layer (z-10) */}
+      {/* Scrollable Content Layer (z-10) */}
       <div className="relative z-10 h-full w-full hidden overflow-y-auto scroll-smooth">
         {/* Section 1 */}
         <section className="flex h-dvh flex-col items-center justify-center px-5 text-center">

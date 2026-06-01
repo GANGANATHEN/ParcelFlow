@@ -1,17 +1,19 @@
 import React from "react";
 import Image from "next/image";
+import bg from "../../../public/image/bgg.svg";
 
-const page = () => {
+const Page = () => {
   return (
-    <div className="h-screen flex justify-center flex-col items-center">
+    <div className="relative h-screen w-screen overflow-hidden">
       <Image
-        src="/image/bgg.svg"
+        src={bg}
         alt="Background Image"
-        width={1920}
-        height={1080}
+        fill
+        priority
+        className="object-cover"
       />
     </div>
   );
 };
 
-export default page;
+export default Page;

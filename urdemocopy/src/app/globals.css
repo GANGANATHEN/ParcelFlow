@@ -18,6 +18,52 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* for grid line  */
+@layer utilities {
+  .perspective-200 {
+    perspective: 200px;
+  }
+  .grid-container {
+    transform: rotateX(30deg);
+    transform-origin: bottom;
+    width: 300%;
+    margin-left: -100%;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+  .grid-containe-d {
+    transform: rotateX(30deg);
+    transform-origin: bottom;
+    width: 160%;
+    margin-left: -20%;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+}
+/* for grid line end  */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #a3e635;
+  border-radius: 999px;
+
+  border: 3px solid transparent;
+  background-clip: content-box;
+  cursor: pointer;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #84cc16;
+  background-clip: content-box;
+}
+
 @theme {
   /* Ithu thaan namma custom colors */
   --color-deep-purple-900: #1a0033;

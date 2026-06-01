@@ -3,6 +3,7 @@
 import { useLenisScroll } from "@/lib/lenis";
 import InvadersClub from "./components/LineCode";
 import MapComponent from "./map";
+import TextArea from "./textArea";
 
 export default function Home() {
   useLenisScroll();
@@ -10,8 +11,9 @@ export default function Home() {
   return (
     <div className="no-scrollbar relative">
       <InvadersClub />
-      <MapComponent />
-      <div className="h-screen ">h</div>
+      {/* <MapComponent /> */}
+      <TextArea />
+      <div className="h-screen ">demi</div>
     </div>
   );
 }

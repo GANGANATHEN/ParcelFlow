@@ -15,6 +15,7 @@ import Img9 from "../../../public/image/needle.svg";
 import Img10 from "../../../public/image/smoke1.png";
 import Img11 from "../../../public/image/smoke.png";
 import CloudBackground from "./cloudBg";
+import RotatingParticleRing from "./particles";
 
 const Testbg = () => {
   const smokeRefs = useRef([]);
@@ -72,7 +73,6 @@ const Testbg = () => {
 
   return (
     <div className="main-div flex flex-col items-center justify-center">
-      {/* <CloudBackground /> */}
       <Image
         src={Img10}
         alt="smoke"
@@ -111,7 +111,10 @@ const Testbg = () => {
         className="mt-20 relative w-[60%] h-175 flex flex-col items-center justify-center 
       bg-[url('/image/cloud.png')] bg-cover bg-center border-2 border-white rounded-lg py-10"
       >
+
         <div className="flex items-center z-2 justify-center">
+        <CloudBackground />
+
           <div className="relative  w-52.5 min-[450px]:w-66 md:w-77.5">
             <div className="relative w-100 h-100 overflow-visible -rotate-20">
               {Array.from({ length: TOTAL_SMOKES }).map((_, i) => (
@@ -144,7 +147,7 @@ const Testbg = () => {
 
             {/* ANIMATED PARTICLES */}
 
-            {/* <RotatingParticleRing /> */}
+            <RotatingParticleRing />
 
             <Centered img={Img7} id={3} scale="82%" />
 
