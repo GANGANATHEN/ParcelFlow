@@ -102,6 +102,29 @@ const InvadersClub = () => {
   const smallRef3 = useRef(null);
   const smallArrow1Ref = useRef(null);
   const smallArrow2Ref = useRef(null);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    el.addEventListener("mousedown", (e) => {
+      isDown = true;
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    });
+    el.addEventListener("mouseleave", () => (isDown = false));
+    el.addEventListener("mouseup", () => (isDown = false));
+    el.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      const walk = (x - startX) * 2; // scroll speed
+      el.scrollLeft = scrollLeft - walk;
+    });
+  }, []);
 
   // draw-line-animation funtionality using gsap
   const faqData = [
@@ -280,6 +303,7 @@ const InvadersClub = () => {
         <Link href="/invaders-club" className="text-[14px]">
           Invaders Club
         </Link>
+        <Link href="/demo">demo</Link>
       </div>
 
       {/* section-1  */}
@@ -1201,7 +1225,10 @@ const InvadersClub = () => {
               cashback from each swap you&apos;ll get.
             </p>
 
-            <div className="w-[90%] overflow-x-auto">
+            <div
+              ref={scrollRef}
+              className="w-[90%] overflow-x-auto no-scrollbar cursor-grab"
+            >
               <div className="inline-block min-w-max">
                 <div className="flex flex-col gap-5">
                   {renderRow("Level", levels, (item) => item.label)}
