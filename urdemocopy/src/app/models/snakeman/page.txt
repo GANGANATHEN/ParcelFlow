@@ -1,0 +1,147 @@
+"use client";
+import React, { useRef, useEffect, useState, Suspense } from "react";
+import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+import { useGLTF, OrbitControls, useAnimations,Environment,ContactShadows, Html } from "@react-three/drei";
+
+// Snakeman Model Component
+function SnakemanModel({ animationName }) {
+  const modelRef = useRef();
+  const { scene, animations } = useGLTF(
+    "/models/onepiece/snakeman_animate.glb",
+  );
+  const { actions } = useAnimations(animations, modelRef);
+
+  useEffect(() => {
+    const action = actions[animationName];
+    if (action) {
+      action.reset().fadeIn(0.3).play();
+      // Animation type combo loop settings: use explicit repetition count for single-play
+      action.setLoop(
+        animationName.includes("combo") ? THREE.LoopOnce : THREE.LoopRepeat,
+        animationName.includes("combo") ? 1 : Infinity,
+      );
+    }
+    return () => action?.fadeOut(0.3);
+  }, [animationName, actions]);
+
+  return (
+    <primitive
+      ref={modelRef}
+      object={scene}
+      scale={185}
+      position={[0, -4, 0]}
+    />
+  );
+}
+
+export default function Page() {
+  const [currentAnim, setCurrentAnim] = useState("pl_luffy_snak01_idle_a");
+
+  // 30 Animation names array
+  const allAnimations = [
+    "pl_luffy_snak01_idle_a",
+    "pl_luffy_snak01_skill_a",
+    "pl_luffy_snak01_skill_b",
+    "pl_luffy_snak01_flagget",
+    "pl_luffy_snak01_boost",
+    "pl_luffy_snak01_dodge",
+    "pl_luffy_snak01_jump",
+    "pl_luffy_snak01_jump_lp",
+    "pl_luffy_snak01_jump_end",
+    "pl_luffy_snak01_damage",
+    "pl_luffy_snak01_flagget_lp",
+    "pl_luffy_snak01_flagget_end",
+    "pl_luffy_snak01_down",
+    "pl_luffy_snak01_down_end",
+    "pl_luffy_snak01_slammed",
+    "pl_luffy_snak01_opening",
+    "pl_luffy_snak01_victory",
+    "pl_luffy_snak01_lose",
+    "pl_luffy_snak01_stun",
+    "pl_luffy_snak01_idlehome_a",
+    "pl_luffy_snak01_blownback_lp",
+    "pl_luffy_snak01_blownback_end",
+    "pl_luffy_snak01_electric_shock",
+    "pl_luffy_snak01_shake",
+    "pl_luffy_snak01_run",
+    "pl_luffy_snak01_combo_a",
+    "pl_luffy_snak01_combo_b",
+    "pl_luffy_snak01_combo_c",
+    "pl_luffy_snak01_victory_lp",
+    "pl_luffy_snak01_lose_lp",
+  ];
+
+  return (
+    <div className="h-screen w-screen bg-pink-950">
+      {/* Scrollable Professional Sidebar */}
+      <div className="no-scrollbar absolute top-5 right-5 z-10 w-48 h-[90vh] overflow-y-auto bg-black/50 p-4 rounded-lg backdrop-blur-md">
+        <h2 className="text-white font-bold mb-4 border-b border-pink-500 pb-2">
+          Animation Controller
+        </h2>
+        <div className="flex flex-col gap-2 ">
+          {allAnimations.map((anim) => (
+            <button
+              key={anim}
+              className={`text-left p-2 rounded text-xs transition-colors ${
+                currentAnim === anim
+                  ? "bg-pink-600 text-white"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+              }`}
+              onClick={() => setCurrentAnim(anim)}
+            >
+              {anim.replace("pl_luffy_snak01_", "").replace(/_/g, " ")}
+            </button>
+          ))}
+        </div>
+      </div>
+
+       {/* <Canvas shadows dpr={[1, 2]} className="cursor-grab">
+        <PerspectiveCamera makeDefault position={[0, 2, 8]} fov={70} />
+        <SoftShadows size={20} samples={16} />
+        <ambientLight intensity={0.5} />
+        <directionalLight
+          position={[5, 10, 5]}
+          intensity={3}
+          castShadow
+          shadow-camera-near={0.1}
+          shadow-camera-far={100}
+        />
+        <Environment preset="night" />
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, -2, 0]}
+          receiveShadow
+        >
+          <planeGeometry args={[100, 100]} />
+          <meshBasicMaterial
+            transparent
+            opacity={0.3}
+            color="white"
+            depthWrite={false}
+            polygonOffset
+            polygonOffsetFactor={-1}
+            polygonOffsetUnits={-1}
+          />
+        </mesh>
+        <SnakemanModel ref={luffyRef} animationName={currentAnim} />
+        <OrbitControls
+          target={[0, 0, 0]}
+          makeDefault
+          enablePan={false}
+          minDistance={5}
+          maxDistance={12}
+        />
+      </Canvas> */}
+
+      <Canvas camera={{ position: [0, 2, 8], fov: 70 }}>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
+        <Suspense fallback={null}>
+          <SnakemanModel animationName={currentAnim} />
+        </Suspense>
+        <OrbitControls maxPolarAngle={Math.PI / 2} />
+      </Canvas>
+    </div>
+  );
+}
