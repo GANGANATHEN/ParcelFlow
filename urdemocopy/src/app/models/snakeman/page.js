@@ -12,14 +12,23 @@ import {
   OrbitControls,
 } from "@react-three/drei";
 
-// 1. Preload the model outside the component to prevent reloading
+// Preload the model outside the component to prevent reloading
 useGLTF.preload("/models/onepiece/snakeman_animate.glb");
 
 const SnakemanModel = forwardRef(({ animationName }, ref) => {
+
   const { scene, animations } = useGLTF(
     "/models/onepiece/snakeman_animate.glb",
   );
+
   const { actions } = useAnimations(animations, ref);
+
+  //   useEffect(() => {
+  //     animations.forEach((clip, index) => {
+  //       console.log(`Animation ${index}: ${clip.name}`);
+  //     });
+  //   }, [animations]);
+
   useEffect(() => {
     // shadow enabled for every part of the model
     scene.traverse((child) => {
@@ -34,7 +43,6 @@ const SnakemanModel = forwardRef(({ animationName }, ref) => {
     const action = actions[animationName];
     if (action) {
       action.reset().fadeIn(0.3).play();
-
       const isCombo = animationName.includes("combo");
       action.setLoop(
         isCombo ? THREE.LoopOnce : THREE.LoopRepeat,
@@ -51,37 +59,53 @@ const SnakemanModel = forwardRef(({ animationName }, ref) => {
     return () => action?.fadeOut(0.3);
   }, [animationName, actions]);
 
-  useFrame(({ clock }) => {
-    if (ref.current) {
-      ref.current.position.set(0, -2, 0);
-    }
+  //   useEffect(() => {
+  //     // Ovvoru mesh-aiyum 2 second-kku hide panni paarkka
+  //     scene.traverse((child) => {
+  //       if (child.isMesh) {
+  //         setTimeout(() => {
+  //           child.visible = false;
+  //           console.log("Hidden mesh:", child.name);
+  //         }, 2000);
 
-    // Blink logic
-    scene.traverse((child) => {
-      if (child.isMesh && child.morphTargetDictionary) {
-        const blinkIndex = child.morphTargetDictionary["Blink"];
-        if (blinkIndex !== undefined) {
-          const time = clock.getElapsedTime();
-          const blink = Math.sin(time * 2) > 0.95 ? 1 : 0;
-          child.morphTargetInfluences[blinkIndex] = blink;
-        }
-      }
-    });
+  //         setTimeout(() => {
+  //           child.visible = true;
+  //         }, 4000);
+  //       }
+  //     });
+  //   }, [scene]);
+
+//   useEffect(() => {
+//     scene.traverse((child) => {
+//       if (child.isMesh) {
+//         console.log("Mesh Found:", child.name, child);
+//       }
+//     });
+//   }, [scene]);
+
+  useFrame(({ clock }) => {
+    const lipMesh = scene.getObjectByName("Object_9");
+    if (lipMesh) {
+      const time = clock.getElapsedTime();
+      const blink = Math.sin(time * 3) > 0.95;
+      lipMesh.visible = !blink;
+    }
   });
 
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (child.isMesh && child.morphTargetDictionary) {
-        console.log(
-          "Morph Targets found in:",
-          child.name,
-          child.morphTargetDictionary,
-        );
-      }
-    });
-  }, [scene]);
+//   useEffect(() => {
+//     scene.traverse((child) => {
+//       if (child.isMesh && child.morphTargetDictionary) {
+//         console.log(
+//           "Morph Targets found in:",
+//           child.name,
+//           child.morphTargetDictionary,
+//         );
+//       }
+//     });
+//   }, [scene]);
 
   return <primitive ref={ref} object={scene} scale={90} />;
+
 });
 
 // Fix for ESLint display-name error
@@ -133,6 +157,43 @@ export default function Page() {
     ],
   };
 
+  const categories1 = {
+    MOVEMENT: [
+      "pl_luffy_thou03_idle_a",
+      "pl_luffy_thou03_run",
+      "pl_luffy_thou03_jump",
+      "pl_luffy_thou03_jump_lp",
+      "pl_luffy_thou03_jump_end",
+      "pl_luffy_thou03_dodge",
+    ],
+    COMBAT: [
+      "pl_luffy_thou03_combo_a",
+      "pl_luffy_thou03_combo_b",
+      "pl_luffy_thou03_combo_c",
+      "pl_luffy_thou03_skill_a",
+      "pl_luffy_thou03_skill_a_end",
+      "pl_luffy_thou03_skill_b",
+      "pl_luffy_thou03_skill_b_lp",
+      "pl_luffy_thou03_skill_b_end",
+      "pl_luffy_thou03_electric_shock",
+    ],
+    STATUS: [
+      "pl_luffy_thou03_damage",
+      "pl_luffy_thou03_slammed",
+      "pl_luffy_thou03_stun",
+      "pl_luffy_thou03_down",
+      "pl_luffy_thou03_down_end",
+      "pl_luffy_thou03_blownback_lp",
+      "pl_luffy_thou03_blownback_end",
+      "pl_luffy_thou03_shake",
+    ],
+    EVENT: [
+      "pl_luffy_thou03_flagget",
+      "pl_luffy_thou03_flagget_lp",
+      "pl_luffy_thou03_flagget_end",
+    ],
+  };
+
   return (
     <div className="h-screen w-screen bg-white overflow-hidden relative">
       {/* HUD Panel - Modern & Grand */}
@@ -164,7 +225,7 @@ export default function Page() {
       </div>
 
       <Canvas shadows dpr={[1, 2]}>
-        {/* 1. LIGHT SETUP (Ithu dhaan Shadow-vai generate pannum) */}
+        {/* LIGHT SETUP (Ithu dhaan Shadow-vai generate pannum) */}
         <directionalLight
           position={[5, 10, 5]}
           intensity={3}
@@ -186,7 +247,7 @@ export default function Page() {
           <shadowMaterial transparent opacity={0.4} />
         </mesh>
 
-        {/* 3. MODEL */}
+        {/* MODEL */}
         <SnakemanModel ref={luffyRef} animationName={currentAnim} />
 
         <Environment preset="night" />

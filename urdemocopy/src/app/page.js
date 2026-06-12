@@ -22,12 +22,12 @@ const Page = () => {
 
       {/* Floating Buttons & Nav (z-20) */}
       <div className="absolute top-0 left-0 w-full z-20">
-        <div className="hidden w-full">
+        <div className=" w-full">
           <Nav_Component />
         </div>
         <button
           onClick={() => setOpen(true)}
-          className="absolute left-10 top-10 rounded-xl bg-white px-6 py-3 text-black shadow-lg hover:bg-gray-100 transition-colors"
+          className="absolute hidden left-10 top-10 rounded-xl bg-white px-6 py-3 text-black shadow-lg hover:bg-gray-100 transition-colors"
         >
           Open Popup
         </button>

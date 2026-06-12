@@ -728,7 +728,7 @@ const Nav_Component = () => {
         className={`${
           sticky
             ? "stickys"
-            : "absolute top-0 hidden min-[117.5rem]:px-60! bg-amber-  lg:px-12 xl:py-6! xl:px-16! 2xl:py-11! lg:py-6 md:py-8 sm:6"
+            : "absolute z-90 top-0 min-[117.5rem]:px-60!  lg:px-12 xl:py-6! xl:px-16! 2xl:py-11! lg:py-6 md:py-8 sm:6"
         } ${openMenu ? "nav-responsive" : "sticky-bg"} ${
           hideNavbar ? "opacity-0 pointer-events-none" : "opacity-100"
         } transition-all duration-300  w-full navber-dasktop `}
@@ -844,12 +844,8 @@ shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,25
 
                   {/* Menu */}
                   {openMenu === nav.name && (
-                    <div className="absolute mt-5 navopen-below w-40 py-2 z-[9999]">
+                    <div className="absolute mt-5 navopen-below w-40 py-2 z-9999">
                       <div className="relative rounded-2xl overflow-hidden">
-                        {/* <div
-                          className="absolute inset-0 backdrop-blur-[3px] bg-[#ffffff8f] 
-shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,255,255,0.17)]"
-                        ></div> */}
                         {/* BORDER */}
                         <div
                           className="pointer-events-none absolute inset-0 z-10 rounded-2xl 
@@ -879,11 +875,11 @@ shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,25
                           }}
                         ></div>
                         {/* MAIN GLASS (IMPORTANT) */}
-                        <div className="absolute inset-0 backdrop-blur-[9px] bg-blend-hard-light bg-white/50  "></div>
+                        <div className="absolute inset-0 backdrop-blur-[14px] bg-blend-hard-light bg-white/50  "></div>
                         {/* SOFT INNER LIGHT */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/5 to-transparent"></div>
                         {/* TOP REFLECTION (REDUCED) */}
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 via-transparent to-transparent opacity-40"></div>
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-40"></div>
                         {/* EDGE HIGHLIGHT (SOFT) */}
                         <div className="absolute inset-0 rounded-2xl shadow-[inset_0_1px_0.5px_rgba(255,255,255,0.3),inset_0_-1px_0.5px_rgba(255,255,255,0.1)]"></div>
                         <div
@@ -895,7 +891,6 @@ shadow-[inset_1px_1px_1px_rgba(255,255,255,0.17),inset_-1px_-1px_1px_rgba(255,25
     0_10px_30px_rgba(0,0,0,0.25)
   ]"
                         ></div>
-
                         {/* BORDER */}
                         {/* <div className="absolute inset-0 rounded-2xl border-2 border-white/20"></div> */}
                         {/* CONTENT */}
