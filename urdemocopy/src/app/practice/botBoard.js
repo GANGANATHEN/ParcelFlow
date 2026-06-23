@@ -35,8 +35,8 @@ export default function BotDashboard() {
         {/* HEADER & CONTROL PANEL */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-              🤖 HFT Bot Controller
+            <h1 className="text-3xl font-extrabold bg-clip-text bg-linear-to-r from-emerald-400 to-cyan-400">
+               <span className="text-transparent">🤖 HFT Bot Controller</span>
             </h1>
 
             <div className="flex items-center gap-4 bg-slate-950 p-2 rounded-xl border border-slate-800">
