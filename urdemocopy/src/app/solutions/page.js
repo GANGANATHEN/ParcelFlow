@@ -1,11 +1,16 @@
-import React from 'react'
+"use client";
 
-const page = () => {
-  return (
-    <div className='text-blue-500'>
-      hello
-    </div>
-  )
-}
+import React, { useEffect } from "react";
+import Problems from "./problems";
 
-export default page
+const Page = () => {
+  useEffect(() => {
+    const result = Problems.NonRepeatStr()
+
+    console.log(result);
+  }, []);
+
+  return <div>Check Console</div>;
+};
+
+export default Page;
