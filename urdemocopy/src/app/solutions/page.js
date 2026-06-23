@@ -5,7 +5,7 @@ import Problems from "./problems";
 
 const Page = () => {
   useEffect(() => {
-    const result = Problems.NonRepeatStr()
+    const result = Problems.RemDubFindSecLarrge();
 
     console.log(result);
   }, []);

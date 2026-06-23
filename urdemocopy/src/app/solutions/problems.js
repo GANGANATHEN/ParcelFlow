@@ -116,6 +116,33 @@ const Problems = {
       }
     }
   },
+  // find second large number
+  FindSecLaerge: () => {
+    const nums = [10, 5, 8, 20, 15];
+    let secondLargest = 0;
+    let largest = 0;
+
+    for (const num of nums) {
+      if (num > largest) {
+        secondLargest = largest;
+        largest = num;
+      } else if (num > secondLargest && num !== largest) {
+        secondLargest = num;
+      }
+    }
+    console.log(secondLargest, largest);
+    return "g";
+  },
+  // duplicate numbers remove + second largest find
+  RemDubFindSecLarrge: () => {
+    const nums = [10, 5, 8, 20, 15, 20, 10, 8];
+    let original = [];
+
+    for (const num of nums) {
+      console.log(num);
+    }
+    return original;
+  },
 
   Sum: () => {
     return 10 + 20;
