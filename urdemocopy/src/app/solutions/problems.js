@@ -133,15 +133,56 @@ const Problems = {
     console.log(secondLargest, largest);
     return "g";
   },
-  // duplicate numbers remove + second largest find
+  // duplicate numbers remove + second largest and third
   RemDubFindSecLarrge: () => {
     const nums = [10, 5, 8, 20, 15, 20, 10, 8];
-    let original = [];
+    let seen = {};
+    let unique = [];
+    let largest = -Infinity;
+    let secondLargest = -Infinity;
+    let thirdLargest = -Infinity;
 
     for (const num of nums) {
-      console.log(num);
+      if (!seen[num]) {
+        unique.push(num);
+        seen[num] = true;
+      }
     }
-    return original;
+    for (const num of unique) {
+      if (num > largest) {
+        thirdLargest = secondLargest;
+        secondLargest = largest;
+        largest = num;
+      } else if (num > secondLargest) {
+        thirdLargest = secondLargest;
+        secondLargest = num;
+      } else if (num > thirdLargest) {
+        thirdLargest = num;
+      }
+    }
+    console.log(thirdLargest, secondLargest, largest, unique, seen);
+    return "hlo";
+  },
+  // find kth largest
+  KthLargest: () => {
+    const nums = [15, 5, 8, 20, 15, 20, 10, 8];
+    const k = 3;
+    let kthLargest = -Infinity;
+
+    // logic
+    for (const num of nums) {
+      if (kthLargest < num) {
+        kthLargest = num;
+      }
+    }
+    for (let i = 0; i < k; i++) {
+      if (kthLargest > nums[i]) {
+        kthLargest = nums[i];
+        console.log(kthLargest)
+      }
+    }
+
+    // return kthLargest;
   },
 
   Sum: () => {

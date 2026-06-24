@@ -5,7 +5,7 @@ import Problems from "./problems";
 
 const Page = () => {
   useEffect(() => {
-    const result = Problems.RemDubFindSecLarrge();
+    const result = Problems.KthLargest();
 
     console.log(result);
   }, []);
