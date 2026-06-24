@@ -5,7 +5,7 @@ import Problems from "./problems";
 
 const Page = () => {
   useEffect(() => {
-    const result = Problems.KthLargest();
+    const result = Problems.KthLargest_2();
 
     console.log(result);
   }, []);

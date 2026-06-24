@@ -164,25 +164,45 @@ const Problems = {
     return "hlo";
   },
   // find kth largest
-  KthLargest: () => {
+  KthLargest_1: () => {
     const nums = [15, 5, 8, 20, 15, 20, 10, 8];
-    const k = 3;
-    let kthLargest = -Infinity;
+    const k = 4;
 
-    // logic
+    let top = [];
+
     for (const num of nums) {
-      if (kthLargest < num) {
-        kthLargest = num;
-      }
-    }
-    for (let i = 0; i < k; i++) {
-      if (kthLargest > nums[i]) {
-        kthLargest = nums[i];
-        console.log(kthLargest)
+      top.push(num);
+
+      top.sort((a, b) => b - a);
+
+      if (top.length > k) {
+        top.pop();
       }
     }
 
-    // return kthLargest;
+    return top[k - 1];
+  },
+  KthLargest_2: () => {
+    const nums = [15, 5, 8, 20, 15, 20, 10, 8];
+    const k = 5;
+
+    let top = Array(k).fill(-Infinity);
+
+    for (const num of nums) {
+      for (let i = 0; i < k; i++) {
+        if (num > top[i]) {
+          for (let j = k - 1; j > i; j--) {
+            top[j] = top[j - 1];
+          }
+
+          top[i] = num;
+          break;
+        }
+      }
+    }
+    console.log(top)
+
+    return top[k - 1];
   },
 
   Sum: () => {
