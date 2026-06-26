@@ -50,7 +50,6 @@ class MaxHeap {
       index = parentIndex;
     }
 
-
   }
 
   extractMax() {
