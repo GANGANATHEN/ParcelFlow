@@ -12,6 +12,7 @@ build/
 *.mp4
 *.avi
 *.mkv
+*.zip
 
 # Environment variables (Safe setup)
 .env
