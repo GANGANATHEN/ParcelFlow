@@ -12,6 +12,7 @@ const MyAnimation = () => {
         animationData={animationData} 
         loop={true} 
         autoplay={true} 
+        
       />
     </div>
   );
