@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { Flip } from "gsap/Flip";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
-import { morphConfig } from "@/app/draw1/components/pathData";
+import { morphConfig } from "@/app/draw2/components/pathData";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, Flip, MorphSVGPlugin);
 

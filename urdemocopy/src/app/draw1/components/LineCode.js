@@ -106,24 +106,42 @@ const InvadersClub = () => {
 
   useEffect(() => {
     const el = scrollRef.current;
+    if (!el) return;
+
     let isDown = false;
     let startX;
     let scrollLeft;
 
-    el.addEventListener("mousedown", (e) => {
+    const handleMouseDown = (e) => {
       isDown = true;
       startX = e.pageX - el.offsetLeft;
       scrollLeft = el.scrollLeft;
-    });
-    el.addEventListener("mouseleave", () => (isDown = false));
-    el.addEventListener("mouseup", () => (isDown = false));
-    el.addEventListener("mousemove", (e) => {
+    };
+    const handleMouseLeave = () => {
+      isDown = false;
+    };
+    const handleMouseUp = () => {
+      isDown = false;
+    };
+    const handleMouseMove = (e) => {
       if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - el.offsetLeft;
       const walk = (x - startX) * 2; // scroll speed
       el.scrollLeft = scrollLeft - walk;
-    });
+    };
+
+    el.addEventListener("mousedown", handleMouseDown);
+    el.addEventListener("mouseleave", handleMouseLeave);
+    el.addEventListener("mouseup", handleMouseUp);
+    el.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      el.removeEventListener("mousedown", handleMouseDown);
+      el.removeEventListener("mouseleave", handleMouseLeave);
+      el.removeEventListener("mouseup", handleMouseUp);
+      el.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   // draw-line-animation funtionality using gsap
@@ -294,7 +312,9 @@ const InvadersClub = () => {
   };
 
   return (
-    <section className="w-full overflow-hidden 3xl:px-60! relative z-10 max-[425px]:px-4 max-md:pb-[30px]! min-[425px]:px-5 min-[500px]:px-6 md:pb-10 sm:px-7 md:px-9 lg:px-12 xl:px-16 2xl:px-35  h-auto  2xl:pt-33! max-sm:pt-16 sm:pt-20 lg:pt-25 ">
+    <div className="relative w-full">
+      <section className="gutter-space">
+    {/* <section className="w-full overflow-hidden 3xl:px-60! relative z-10 max-[425px]:px-4 max-md:pb-[30px]! min-[425px]:px-5 min-[500px]:px-6 md:pb-10 sm:px-7 md:px-9 lg:px-12 xl:px-16 2xl:px-35  h-auto  2xl:pt-33! max-sm:pt-16 sm:pt-20 lg:pt-25 "> */}
       <div className="font-archivo font-normal text-[#e6e6e6] flex gap-1">
         <Link href="/" className="text-[14px]">
           Main
@@ -309,7 +329,7 @@ const InvadersClub = () => {
       {/* section-1  */}
       <section
         ref={smallSectionRef}
-        className="w-full grid md:grid-cols-2 grid-cols-1 lg:gap-12 gap-5 sm:gap-6 md:gap-7 pt-[30px] md:pb-[50px] "
+        className="w-full grid md:grid-cols-2 grid-cols-1 lg:gap-12 gap-5 sm:gap-6 md:gap-7 pt-[30px] md:pb-[50px] overflow-hidden"
       >
         <div className="w-full">
           <h1
@@ -378,13 +398,14 @@ const InvadersClub = () => {
                   >
                     <path
                       ref={smallRef1}
-                      transform="scale(-1,1) translate(-WIDTH 0)"
+                      transform="scale(-1,1) translate(-92 0)"
                       d="M89.5 28.4298C81.8743 22.4404 59.8505 12.5062 24.0326 14.7925C-22.9674 17.7925 12.0326 39.2925 29.5326 43.2925C47.0326 47.2925 62.0326 30.7925 40.0326 0.29248"
                       stroke="#D3ED05"
                       strokeWidth="2.5"
                     />
                     <path
                       ref={smallArrow1Ref}
+                      transform="scale(-1,1) translate(-92 0)"
                       d="M89.5 28.4298C89.8794 28.7278 90.2232 29.016 90.5312 29.2925M85.0312 14.7925L90.5312 29.2925L76.5312 32.2925"
                       stroke="#D3ED05"
                       strokeWidth="2.5"
@@ -406,13 +427,14 @@ const InvadersClub = () => {
                   >
                     <path
                       ref={smallRef2}
-                      transform="scale(-1,1) translate(-WIDTH 0)"
+                      transform="scale(-1,1) translate(-105 0)"
                       d="M102.755 2.82559C82.2466 19.659 39.4929 50.5684 26.0742 44.6484C9.07422 37.1484 9.07422 8.15093 19.5742 2.15093C27.9742 -2.64907 38.7409 4.15093 43.0742 8.15093C46.4076 19.9843 42.4742 42.0509 0.0742188 35.6509"
                       stroke="#D3ED05"
                       strokeWidth="2.5"
                     />
                     <path
                       ref={smallArrow2Ref}
+                      transform="scale(-1,1) translate(-105 0)"
                       d="M102.755 2.8256C103.032 2.5981 103.305 2.37317 103.574 2.15094M83.0742 2.15094H103.574V35.6509"
                       stroke="#D3ED05"
                       strokeWidth="2.5"
@@ -461,7 +483,11 @@ const InvadersClub = () => {
       </section>
 
       {/* draw-line animation container */}
-      <section className="relative" ref={(el) => (refs.current.scope = el)}>
+      {/* draw-line animation container */}
+      <section
+        className="relative overflow-visible"
+        ref={(el) => (refs.current.scope = el)}
+      >
         {/* draw-line svg path */}
         <svg
           id="wrap"
@@ -506,12 +532,12 @@ const InvadersClub = () => {
 
         {/* content-1 */}
         <main
-          className="w-full flex justify-start min-h-[400px] xl:min-h-[500px] 2xl:min-h-[700px]"
+          className="w-full flex justify-start min-h-[400px] xl:min-h-[500px] 2xl:min-h-[700px] overflow-visible"
           ref={(el) => (refs.current.stage1 = el)}
         >
           {/* content */}
           <div
-            className="flex flex-col ml-28 xl:mt-12 2xl:mt-25 gap-3 xl:gap-5 w-1/2"
+            className="flex flex-col ml-28 xl:mt-12 2xl:mt-25 gap-3 xl:gap-5 w-1/2 overflow-hidden"
             ref={(el) => (refs.current.content1 = el)}
           >
             <h6 className="text-[#C5DE05] heading_font-size">Stage 1</h6>
@@ -537,13 +563,17 @@ const InvadersClub = () => {
           {/* BTN 1 */}
           <div
             ref={(el) => (refs.current.btnWraps[0] = el)}
-            className="btn-1 absolute top-0 left-0 flex gap-10 opacity-0"
+            className="btn-1 absolute top-0 left-0 flex gap-10 opacity-0 overflow-visible"
           >
             <div
               ref={(el) => (refs.current.buttons[0] = el)}
               className="relative w-28 h-8 xl:w-32 xl:h-8 2xl:w-36 2xl:h-10"
             >
-              <svg viewBox="0 0 144 40" className="w-full h-full rotate-10">
+              <svg
+                viewBox="0 0 144 40"
+                style={{ overflow: "visible" }}
+                className="w-full h-full rotate-10 overflow-visible"
+              >
                 {/* BUTTON SHAPE */}
                 <path id="btnShape1" fill="#d3ed05" d={buttonShape} />
 
@@ -591,7 +621,8 @@ const InvadersClub = () => {
             >
               <svg
                 viewBox="0 0 54 40"
-                className="w-full h-full rotate-9 absolute -right-16"
+                style={{ overflow: "visible" }}
+                className="w-full h-full rotate-9 absolute -right-16 overflow-visible"
               >
                 {/* BUTTON SHAPE */}
                 <path id="btnShape2" fill="#d3ed05" d={smallButtonShape} />
@@ -635,13 +666,17 @@ const InvadersClub = () => {
           {/* BTN 2 */}
           <div
             ref={(el) => (refs.current.btnWraps[1] = el)}
-            className="btn-1 absolute top-0 left-0 flex gap-10 opacity-0"
+            className="btn-1 absolute top-0 left-0 flex gap-10 opacity-0 overflow-visible"
           >
             <div
               ref={(el) => (refs.current.buttons[2] = el)}
               className="relative w-28 h-8 xl:w-32 xl:h-8 2xl:w-36 2xl:h-10"
             >
-              <svg viewBox="0 0 144 40" className="w-full h-full -rotate-10">
+              <svg
+                viewBox="0 0 144 40"
+                style={{ overflow: "visible" }}
+                className="w-full h-full -rotate-10 overflow-visible"
+              >
                 {/* BUTTON SHAPE */}
                 <path id="btnShape3" fill="#d3ed05" d={buttonShape} />
 
@@ -660,7 +695,7 @@ const InvadersClub = () => {
                 {/* STAR SHAPE (MORPH TARGET) */}
                 <path
                   id="shieldShape"
-                  fill="url(#starGradient)"
+                  fill="url(#shieldGradient)"
                   d={shieldShape}
                   style={{ visibility: "hidden" }}
                 />
@@ -691,6 +726,7 @@ const InvadersClub = () => {
             >
               <svg
                 viewBox="0 0 54 40"
+                style={{ overflow: "visible" }}
                 className="w-full h-full -rotate-25 absolute -left-6 overflow-visible"
               >
                 {/* BUTTON SHAPE */}
@@ -713,7 +749,7 @@ const InvadersClub = () => {
                 <path
                   id="impellerShape"
                   d={impellerShape}
-                  fill="url(#diamondGradient)"
+                  fill="url(#impellerGradient)"
                   style={{ visibility: "hidden" }}
                 />
 
@@ -741,13 +777,17 @@ const InvadersClub = () => {
           {/* BTN 3 */}
           <div
             ref={(el) => (refs.current.btnWraps[2] = el)}
-            className="btn-1 absolute top-0 left-0 flex gap-10 opacity-0"
+            className="btn-1 absolute top-0 left-0 flex gap-10 opacity-0 overflow-visible"
           >
             <div
               ref={(el) => (refs.current.buttons[4] = el)}
               className="relative w-28 h-8 xl:w-32 xl:h-8 2xl:w-36 2xl:h-10"
             >
-              <svg viewBox="0 0 144 40" className="w-full h-full rotate-15">
+              <svg
+                viewBox="0 0 144 40"
+                style={{ overflow: "visible" }}
+                className="w-full h-full rotate-15 overflow-visible"
+              >
                 {/* BUTTON SHAPE */}
                 <path id="btnShape5" fill="#d3ed05" d={buttonShape} />
 
@@ -798,7 +838,8 @@ const InvadersClub = () => {
             >
               <svg
                 viewBox="0 0 54 40"
-                className="w-full h-full rotate-19 absolute -right-16"
+                style={{ overflow: "visible" }}
+                className="w-full h-full rotate-19 absolute -right-16 overflow-visible"
               >
                 {/* BUTTON SHAPE */}
                 <path id="btnShape6" fill="#d3ed05" d={smallButtonShape} />
@@ -866,7 +907,7 @@ const InvadersClub = () => {
                 <path id={item.circleId} d={circleShape} fill="#F0E49A" />
 
                 {/* blast particles */}
-                <g className="blast hidden">
+                <g className="blast">
                   {radii.map((r, i) => (
                     <circle
                       key={i}
@@ -988,118 +1029,117 @@ const InvadersClub = () => {
           </div>
 
           {/* split particles independent absolute */}
-          {["splitC1", "splitC2", "splitC3", "splitC4"].map((id, i) => (
-            <div
-              key={id}
-              id={id}
-              className={`absolute top-0 left-0 pointer-events-none opacity-0 ${
-                i === 3 ? "z-10" : "-z-10"
-              }`}
-            >
-              <svg className="splitSvg" style={{ overflow: "visible" }}>
-                {/* ---------- FIRST 3 = PATH BASED MORPHABLE ---------- */}
-                {i !== 3 && (
-                  <>
-                    {/* source circle path */}
+          <div className="absolute inset-0 pointer-events-none overflow-visible z-10">
+            <svg width="0" height="0" className="absolute pointer-events-none">
+              <defs>
+                <linearGradient
+                  id="HGradient"
+                  x1="10%"
+                  y1="10%"
+                  x2="100%"
+                  y2="45%"
+                  gradientUnits="objectBoundingBox"
+                >
+                  <stop offset="0%" stopColor="#ff41b3" />
+                  <stop offset="30%" stopColor="#ff5fa2" />
+                  <stop offset="58%" stopColor="#ff8a7a" />
+                  <stop offset="82%" stopColor="#ffc93a" />
+                  <stop offset="100%" stopColor="#ffe36a" />
+                </linearGradient>
+                <linearGradient
+                  id="SGradient"
+                  x1="25%"
+                  y1="12%"
+                  x2="96%"
+                  y2="88%"
+                  gradientUnits="objectBoundingBox"
+                >
+                  <stop offset="0%" stopColor="#F8F3E7" />
+                  <stop offset="16%" stopColor="#E8D5B0" />
+                  <stop offset="22%" stopColor="#6FD8FF" />
+                  <stop offset="38%" stopColor="#57AFFF" />
+                  <stop offset="64%" stopColor="#FFD84E" />
+                  <stop offset="85%" stopColor="#FF63D4" />
+                </linearGradient>
+                <linearGradient
+                  id="SHGradient"
+                  x1="14%"
+                  y1="15%"
+                  x2="15%"
+                  y2="95%"
+                  gradientUnits="objectBoundingBox"
+                >
+                  <stop offset="0%" stopColor="#ff4fd8" />
+                  <stop offset="30%" stopColor="#ffcc66" />
+                  <stop offset="82%" stopColor="#37e6ff" />
+                  <stop offset="100%" stopColor="#2c5cdf" />
+                </linearGradient>
+              </defs>
+            </svg>
+            {["splitC1", "splitC2", "splitC3"].map((id, i) => (
+              <div
+                key={id}
+                id={id}
+                className="absolute top-0 left-0 pointer-events-none opacity-0"
+              >
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 30 30"
+                  className="splitSvg"
+                  style={{ overflow: "visible" }}
+                >
+                  {/* ---------- FIRST 3 = PATH BASED MORPHABLE ---------- */}
+                  {/* source circle path */}
+                  <path
+                    id={`splitBase${i + 1}`}
+                    // fill="url(#HGradient)"
+                    d={circleShape}
+                    fill="#FFFFFF"
+                  />
+
+                  {/* hidden morph target */}
+                  {i === 0 && (
                     <path
-                      id={`splitBase${i + 1}`}
-                      // fill="url(#HGradient)"
-                      d={circleShape}
+                      id="splitMorph1"
+                      d={heartShape}
                       fill="#FFFFFF"
+                      visibility="hidden"
                     />
+                  )}
 
-                    {/* hidden morph target */}
-                    {i === 0 && (
-                      <path
-                        id="splitMorph1"
-                        d={heartShape}
-                        fill="#FFFFFF"
-                        visibility="hidden"
-                      />
-                    )}
+                  {i === 1 && (
+                    <path
+                      id="splitMorph2"
+                      d={squareShape}
+                      fill="#FFFFFF"
+                      visibility="hidden"
+                    />
+                  )}
 
-                    {i === 1 && (
-                      <path
-                        id="splitMorph2"
-                        d={squareShape}
-                        fill="#FFFFFF"
-                        visibility="hidden"
-                      />
-                    )}
-
-                    {i === 2 && (
-                      <path
-                        id="splitMorph3"
-                        d={starShape}
-                        fill="#FFFFFF"
-                        visibility="hidden"
-                      />
-                    )}
-                  </>
-                )}
-
-                {/* ---------- LAST ONE = REAL CIRCLE FOR FULLSCREEN SCALE ---------- */}
-                {i === 3 && <circle className="splitCircle" fill="#FFFFFF" />}
-
-                {/* GRADIENT */}
-                <defs>
-                  <linearGradient
-                    id="HGradient"
-                    x1="10%"
-                    y1="10%"
-                    x2="100%"
-                    y2="45%"
-                    gradientUnits="objectBoundingBox"
-                  >
-                    <stop offset="0%" stopColor="#ff41b3" />
-                    <stop offset="30%" stopColor="#ff5fa2" />
-                    <stop offset="58%" stopColor="#ff8a7a" />
-                    <stop offset="82%" stopColor="#ffc93a" />
-                    <stop offset="100%" stopColor="#ffe36a" />
-                  </linearGradient>
-                </defs>
-                <defs>
-                  <linearGradient
-                    id="SGradient"
-                    x1="25%"
-                    y1="12%"
-                    x2="96%"
-                    y2="88%"
-                    gradientUnits="objectBoundingBox"
-                  >
-                    <stop offset="0%" stopColor="#F8F3E7" />
-                    <stop offset="16%" stopColor="#E8D5B0" />
-                    <stop offset="22%" stopColor="#6FD8FF" />
-                    <stop offset="38%" stopColor="#57AFFF" />
-                    <stop offset="64%" stopColor="#FFD84E" />
-                    <stop offset="85%" stopColor="#FF63D4" />
-                  </linearGradient>
-                </defs>
-                <defs>
-                  <linearGradient
-                    id="SHGradient"
-                    x1="14%"
-                    y1="15%"
-                    x2="15%"
-                    y2="95%"
-                    gradientUnits="objectBoundingBox"
-                  >
-                    <stop offset="0%" stopColor="#ff4fd8" />
-                    <stop offset="30%" stopColor="#ffcc66" />
-                    <stop offset="82%" stopColor="#37e6ff" />
-                    <stop offset="100%" stopColor="#2c5cdf" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-          ))}
+                  {i === 2 && (
+                    <path
+                      id="splitMorph3"
+                      d={starShape}
+                      fill="#FFFFFF"
+                      visibility="hidden"
+                    />
+                  )}
+                </svg>
+              </div>
+            ))}
+          </div>
 
           {/* bShape */}
           <div
             id="iconStar5"
             className="shape-size absolute top-0 left-0 pointer-events-none opacity-0"
           >
-            <svg viewBox="0 0 24 24" className="w-full h-full">
+            <svg
+              viewBox="0 0 24 24"
+              style={{ overflow: "visible" }}
+              className="w-full h-full overflow-visible"
+            >
               <path d={bShape} fill="url(#BGradient)" />
               <defs>
                 <linearGradient
@@ -1126,7 +1166,11 @@ const InvadersClub = () => {
             id="iconStar6"
             className="shape-size absolute top-0 left-0 pointer-events-none opacity-0"
           >
-            <svg viewBox="0 0 24 24" className="w-full h-full">
+            <svg
+              viewBox="0 0 24 24"
+              style={{ overflow: "visible" }}
+              className="w-full h-full overflow-visible"
+            >
               <path d={heartShape} fill="url(#HeGradient)" />
               <linearGradient
                 id="HeGradient"
@@ -1150,7 +1194,11 @@ const InvadersClub = () => {
             id="iconStar7"
             className="shape-size absolute -top-2 left-0 pointer-events-none opacity-0"
           >
-            <svg viewBox="0 0 40 40" className="w-full h-full overflow-visible">
+            <svg
+              viewBox="0 0 40 40"
+              style={{ overflow: "visible" }}
+              className="w-full h-full overflow-visible"
+            >
               <g transform="translate(2,2)">
                 <path d={mShape} fill="url(#MGradient)" />
               </g>
@@ -1181,7 +1229,7 @@ const InvadersClub = () => {
           ref={(el) => (refs.current.stage2 = el)}
         >
           <div
-            className="w-1/2 flex flex-col gap-3 xl:gap-5 mt-24"
+            className="w-1/2 flex flex-col gap-3 xl:gap-5 mt-24 overflow-hidden"
             ref={(el) => (refs.current.content2 = el)}
           >
             <h6 className="text-[#C5DE05] heading_font-size">Stage 2</h6>
@@ -1280,7 +1328,7 @@ const InvadersClub = () => {
 
       <section
         ref={(el) => (refs.current.revealSection = el)}
-        className="w-full min-h-screen flex flex-col justify-start border text-red-500 text-2xl"
+        className="w-full min-h-screen flex flex-col justify-start border text-red-500 text-2xl overflow-hidden"
       >
         <div className="mx-auto mt-3 p-3 border border-amber-300">
           <p>dummy</p>
@@ -1296,8 +1344,30 @@ const InvadersClub = () => {
         </div>
       </section>
 
-      <section className="h-[500px]">footer</section>
+      {/* <section className="fixed h-[500px] border-2 border-amber-300">footer</section> */}
     </section>
+
+    {/* dedicated animation layer for fullscreen circle */}
+    <div
+      ref={(el) => (refs.current.circleLayer = el)}
+      className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-visible z-20"
+    >
+      <div
+        id="splitC4"
+        className="absolute top-0 left-0 pointer-events-none opacity-0 z-10"
+      >
+        <svg
+          width="72"
+          height="72"
+          viewBox="0 0 72 72"
+          className="splitSvg"
+          style={{ overflow: "visible" }}
+        >
+          <circle className="splitCircle" cx="36" cy="36" r="32" fill="#FFFFFF" />
+        </svg>
+      </div>
+    </div>
+  </div>
   );
 };
 

@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { Flip } from "gsap/Flip";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
-import { morphConfig } from "@/app/draw1/components/pathData";
+import { morphConfig } from "@/app/draw2/components/pathData";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, Flip, MorphSVGPlugin);
 
@@ -16,6 +16,7 @@ export default function useLineAnimation({ refs }) {
 
     // draw line main container
     const scope = refs.current.scope;
+    const circleLayer = refs.current.circleLayer;
 
     // line animations
     const wings = refs.current.wings;
@@ -956,6 +957,17 @@ export default function useLineAnimation({ refs }) {
       };
     }
 
+    function getLayerOffset() {
+      if (!circleLayer || !scope) return { x: 0, y: 0 };
+      const s = scope.getBoundingClientRect();
+      const l = circleLayer.getBoundingClientRect();
+
+      return {
+        x: s.left - l.left,
+        y: s.top - l.top,
+      };
+    }
+
     const splitAnchors = ["#anchor9", "#anchor10", "#anchor11", "#anchor12"];
     const splitParticles = ["#splitC1", "#splitC2", "#splitC3", "#splitC4"];
 
@@ -978,9 +990,10 @@ export default function useLineAnimation({ refs }) {
 
       splitParticles.forEach((particle, i) => {
         const isLast = i === 3;
+        const targetContainer = isLast && circleLayer ? circleLayer : scope;
 
-        const svgEl = scope.querySelector(`${particle} svg`);
-        const circleEl = scope.querySelector(`${particle} circle`);
+        const svgEl = targetContainer.querySelector(`${particle} svg`);
+        const circleEl = targetContainer.querySelector(`${particle} circle`);
 
         // ---------------- FIRST 3 SMALL MORPH PARTICLES ----------------
         if (!isLast) {
@@ -1031,6 +1044,8 @@ export default function useLineAnimation({ refs }) {
         }
       });
     }
+
+    applyResponsiveSplitCircles();
 
     let splitCenter = { x: 0, y: 0 };
 
@@ -1086,13 +1101,23 @@ export default function useLineAnimation({ refs }) {
 
     // spawn particles at exact center using timeline .set (NOT callback gsap.set)
     splitParticles.forEach((particle, i) => {
+      const isLast = i === 3;
       splitTL.set(
         particle,
         {
           opacity: 1,
+          autoAlpha: 1,
           scale: 1,
-          x: () => splitCenter.x + 35 - getParticleCenters()[i],
-          y: () => splitCenter.y + 35 - getParticleCenters()[i],
+          x: () =>
+            splitCenter.x +
+            35 -
+            getParticleCenters()[i] +
+            (isLast ? getLayerOffset().x : 0),
+          y: () =>
+            splitCenter.y +
+            35 -
+            getParticleCenters()[i] +
+            (isLast ? getLayerOffset().y : 0),
         },
         0,
       );
@@ -1100,15 +1125,18 @@ export default function useLineAnimation({ refs }) {
 
     // split outward
     splitParticles.forEach((particle, i) => {
+      const isLast = i === 3;
       splitTL.to(
         particle,
         {
           x: () =>
             getScopePos(scope.querySelector(splitAnchors[i])).x -
-            particleCenters[i],
+            particleCenters[i] +
+            (isLast ? getLayerOffset().x : 0),
           y: () =>
             getScopePos(scope.querySelector(splitAnchors[i])).y -
-            particleCenters[i],
+            particleCenters[i] +
+            (isLast ? getLayerOffset().y : 0),
           duration: 0.04,
           ease: "expo.out",
         },
@@ -1159,6 +1187,7 @@ export default function useLineAnimation({ refs }) {
           y: item.y,
           scale: item.scale,
           opacity: 0,
+          autoAlpha: 0,
           duration: item.dur,
           ease: "power4.in",
         },

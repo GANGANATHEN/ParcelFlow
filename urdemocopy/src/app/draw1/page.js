@@ -11,11 +11,11 @@ export default function Home() {
   // SmoothScrollWrapper()
 
   return (
-    <div className="no-scrollbar relative">
+    <div className="no-scrollbar relative w-full">
       <InvadersClub />
       {/* <MapComponent /> */}
-      <TextArea />
-      <div className="h-screen ">demi</div>
+      {/* <TextArea />
+      <div className="h-screen ">demi</div> */}
     </div>
   );
 }

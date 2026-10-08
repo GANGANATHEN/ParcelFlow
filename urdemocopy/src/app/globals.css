@@ -114,3 +114,7 @@ body {
 .shape-size {
   @apply w-4 h-4 lg:w-4.5 lg:h-4.5 xl:w-5 xl:h-5 2xl:w-6 2xl:h-6;
 }
+
+.gutter-space {
+  @apply 2xl:max-w-[1500px] xl:max-w-[1200px] lg:max-w-[1000px] [@media(min-width:930px)_and_(max-width:1023px)]:max-w-[850px] md:max-w-[740px] sm:max-w-[600px] w-full mx-auto px-[20px]  relative z-10 xl:pt-33 lg:pt-30 md:pt-26 sm:pt-24 pt-20 pb-15 h-auto;
+}
