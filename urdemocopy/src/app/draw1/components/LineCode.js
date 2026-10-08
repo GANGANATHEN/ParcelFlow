@@ -481,8 +481,7 @@ const InvadersClub = () => {
           </p>
         </div>
       </section>
-
-      {/* draw-line animation container */}
+      
       {/* draw-line animation container */}
       <section
         className="relative overflow-visible"
