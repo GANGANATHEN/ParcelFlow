@@ -1078,6 +1078,7 @@ export default function useLineAnimation({ refs }) {
 
     const splitAnchors = ["#anchor9", "#anchor10", "#anchor11", "#anchor12"];
     const splitParticles = ["#splitC1", "#splitC2", "#splitC3", "#splitC4"];
+    const FULLSCREEN_SCALE = 40;
 
     function getParticleCenters() {
       const cfg = getResponsiveSplitConfig();
@@ -1086,7 +1087,7 @@ export default function useLineAnimation({ refs }) {
         cfg.smallSize / 2,
         cfg.smallSize / 2,
         cfg.smallSize / 2,
-        cfg.bigSize / 2,
+        (cfg.bigSize * FULLSCREEN_SCALE) / 2,
       ];
     }
 
@@ -1128,9 +1129,14 @@ export default function useLineAnimation({ refs }) {
 
         // ---------------- LAST BIG TRUE CIRCLE ----------------
         if (isLast) {
-          const size = cfg.bigSize;
+          const size = cfg.bigSize * FULLSCREEN_SCALE;
           const center = size / 2;
-          const radius = cfg.bigRadius;
+          const radius = cfg.bigRadius * FULLSCREEN_SCALE;
+
+          gsap.set(targetContainer.querySelector(particle), {
+            scale: 1 / FULLSCREEN_SCALE,
+            transformOrigin: "50% 50%",
+          });
 
           gsap.set(svgEl, {
             attr: {
@@ -1215,7 +1221,8 @@ export default function useLineAnimation({ refs }) {
         {
           opacity: 1,
           autoAlpha: 1,
-          scale: 1,
+          scale: isLast ? 1 / FULLSCREEN_SCALE : 1,
+          transformOrigin: "50% 50%",
           x: () =>
             splitCenter.x +
             35 -
@@ -1239,11 +1246,11 @@ export default function useLineAnimation({ refs }) {
         {
           x: () =>
             getScopePos(scope.querySelector(splitAnchors[i])).x -
-            particleCenters[i] +
+            getParticleCenters()[i] +
             (isLast ? getLayerOffset().x : 0),
           y: () =>
             getScopePos(scope.querySelector(splitAnchors[i])).y -
-            particleCenters[i] +
+            getParticleCenters()[i] +
             (isLast ? getLayerOffset().y : 0),
           duration: 0.04,
           ease: "expo.out",
@@ -1358,7 +1365,7 @@ export default function useLineAnimation({ refs }) {
     splitTL.to(
       "#splitC4",
       {
-        scale: 40,
+        scale: 1,
         opacity: 0.9,
         duration: 0.07,
         delay: 0.025,

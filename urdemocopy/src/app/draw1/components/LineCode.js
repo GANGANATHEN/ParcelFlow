@@ -1356,13 +1356,13 @@ const InvadersClub = () => {
         className="absolute top-0 left-0 pointer-events-none opacity-0 z-10"
       >
         <svg
-          width="72"
-          height="72"
-          viewBox="0 0 72 72"
+          width="2880"
+          height="2880"
+          viewBox="0 0 2880 2880"
           className="splitSvg"
           style={{ overflow: "visible" }}
         >
-          <circle className="splitCircle" cx="36" cy="36" r="32" fill="#FFFFFF" />
+          <circle className="splitCircle" cx="1440" cy="1440" r="1280" fill="#FFFFFF" />
         </svg>
       </div>
     </div>
