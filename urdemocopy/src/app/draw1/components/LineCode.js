@@ -514,19 +514,19 @@ const InvadersClub = () => {
           />
 
           {/* icons to fall in along the path */}
-          <circle id="anchor1" cx="165" cy="1085" />
-          <circle id="anchor2" cx="210" cy="1085" />
-          <circle id="anchor3" cx="185" cy="1045" />
-          <circle id="anchor4" cx="320" cy="1110" />
-          <circle id="anchor5" cx="340" cy="1430" />
-          <circle id="anchor6" cx="370" cy="1590" />
-          <circle id="anchor7" cx="180" cy="1570" />
-          <circle id="anchor8" cx="290" cy="1550" />
-          <circle id="anchor9" cx="196" cy="2363" />
-          <circle id="anchor10" cx="125" cy="2365" />
-          <circle id="anchor11" cx="63" cy="2365" />
-          <circle id="anchor12" cx="273" cy="2460" />
-          <circle id="anchorMergePath" cx="280" cy="1695" />
+          <circle id="anchor1" cx="165" cy="1085" r="2" fill="none" opacity="0" />
+          <circle id="anchor2" cx="210" cy="1085" r="2" fill="none" opacity="0" />
+          <circle id="anchor3" cx="185" cy="1045" r="2" fill="none" opacity="0" />
+          <circle id="anchor4" cx="320" cy="1110" r="2" fill="none" opacity="0" />
+          <circle id="anchor5" cx="340" cy="1430" r="2" fill="none" opacity="0" />
+          <circle id="anchor6" cx="370" cy="1590" r="2" fill="none" opacity="0" />
+          <circle id="anchor7" cx="180" cy="1570" r="2" fill="none" opacity="0" />
+          <circle id="anchor8" cx="290" cy="1550" r="2" fill="none" opacity="0" />
+          <circle id="anchor9" cx="196" cy="2363" r="2" fill="none" opacity="0" />
+          <circle id="anchor10" cx="125" cy="2365" r="2" fill="none" opacity="0" />
+          <circle id="anchor11" cx="63" cy="2365" r="2" fill="none" opacity="0" />
+          <circle id="anchor12" cx="273" cy="2460" r="2" fill="none" opacity="0" />
+          <circle id="anchorMergePath" cx="280" cy="1695" r="2" fill="none" opacity="0" />
         </svg>
 
         {/* content-1 */}

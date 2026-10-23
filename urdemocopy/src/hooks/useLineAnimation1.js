@@ -75,24 +75,6 @@ export default function useLineAnimation({ refs }) {
     // for line height
     const svg = scope.querySelector("#wrap");
 
-    function getDynamicEnd() {
-      const renderedSvgHeight = svg.getBoundingClientRect().height;
-      const distance = renderedSvgHeight * 1.45;
-      // console.log(distance);
-      return distance;
-    }
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        id: "mainLine",
-        trigger: scope,
-        start: "top center",
-        end: () => `+=${getDynamicEnd()}`,
-        scrub: 3.6,
-        invalidateOnRefresh: true,
-      },
-    });
-
     // svg height
     function getResponsiveSvgHeight() {
       const currentWidth = window.innerWidth;
@@ -126,6 +108,132 @@ export default function useLineAnimation({ refs }) {
         strokeWidth: dynamicStroke,
       });
     }
+
+    // Apply responsive SVG dimensions and stroke immediately before creating timeline
+    applyResponsiveSvgHeight();
+    applyResponsiveStroke();
+
+    function getDynamicEnd() {
+      const renderedSvgHeight = svg.getBoundingClientRect().height;
+      const distance = renderedSvgHeight * 1.45;
+      // console.log(distance);
+      return distance;
+    }
+
+    // Cross-browser anchor & element rect calculation (resolves SVG circles accurately in WebKit/Safari)
+    function getAnchorRect(target) {
+      if (!target) {
+        return {
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: 0,
+          height: 0,
+          x: 0,
+          y: 0,
+        };
+      }
+
+      const el =
+        typeof target === "string" ? scope.querySelector(target) : target;
+      if (!el) {
+        return {
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: 0,
+          height: 0,
+          x: 0,
+          y: 0,
+        };
+      }
+
+      const isCircle =
+        (el.tagName && el.tagName.toLowerCase() === "circle") ||
+        (el.nodeName && el.nodeName.toLowerCase() === "circle");
+
+      if (isCircle && (el.hasAttribute("cx") || (el.cx && el.cx.baseVal))) {
+        const ownerSvg = el.ownerSVGElement || scope.querySelector("#wrap");
+        if (ownerSvg) {
+          const svgRect = ownerSvg.getBoundingClientRect();
+          const vb = ownerSvg.viewBox && ownerSvg.viewBox.baseVal;
+          const vbWidth = vb && vb.width > 0 ? vb.width : 1432;
+          const vbHeight = vb && vb.height > 0 ? vb.height : 2455;
+
+          const cx =
+            el.cx && el.cx.baseVal
+              ? el.cx.baseVal.value
+              : parseFloat(el.getAttribute("cx") || "0");
+          const cy =
+            el.cy && el.cy.baseVal
+              ? el.cy.baseVal.value
+              : parseFloat(el.getAttribute("cy") || "0");
+
+          const screenX = svgRect.left + cx * (svgRect.width / vbWidth);
+          const screenY = svgRect.top + cy * (svgRect.height / vbHeight);
+
+          return {
+            left: screenX,
+            top: screenY,
+            right: screenX,
+            bottom: screenY,
+            x: screenX,
+            y: screenY,
+            width: 0,
+            height: 0,
+          };
+        }
+      }
+
+      const r = el.getBoundingClientRect();
+      if (
+        r.width === 0 &&
+        r.height === 0 &&
+        r.left === 0 &&
+        r.top === 0 &&
+        el.ownerSVGElement
+      ) {
+        const ownerSvg = el.ownerSVGElement || scope.querySelector("#wrap");
+        if (ownerSvg) {
+          const svgRect = ownerSvg.getBoundingClientRect();
+          const vb = ownerSvg.viewBox && ownerSvg.viewBox.baseVal;
+          const vbWidth = vb && vb.width > 0 ? vb.width : 1432;
+          const vbHeight = vb && vb.height > 0 ? vb.height : 2455;
+
+          const cx = parseFloat(el.getAttribute("cx") || "0");
+          const cy = parseFloat(el.getAttribute("cy") || "0");
+
+          const screenX = svgRect.left + cx * (svgRect.width / vbWidth);
+          const screenY = svgRect.top + cy * (svgRect.height / vbHeight);
+
+          return {
+            left: screenX,
+            top: screenY,
+            right: screenX,
+            bottom: screenY,
+            x: screenX,
+            y: screenY,
+            width: 0,
+            height: 0,
+          };
+        }
+      }
+
+      return r;
+    }
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        id: "mainLine",
+        trigger: scope,
+        start: "top center",
+        end: () => `+=${getDynamicEnd()}`,
+        scrub: 3.6,
+        invalidateOnRefresh: true,
+      },
+    });
 
     //---------------\\
 
@@ -336,12 +444,12 @@ export default function useLineAnimation({ refs }) {
         btn,
         {
           x: () =>
-            anchor.getBoundingClientRect().left -
+            getAnchorRect(anchor).left -
             btn.getBoundingClientRect().left -
             12,
 
           y: () =>
-            anchor.getBoundingClientRect().top -
+            getAnchorRect(anchor).top -
             btn.getBoundingClientRect().top -
             10,
 
@@ -380,7 +488,7 @@ export default function useLineAnimation({ refs }) {
 
         if (!anchor || !icon) return;
 
-        const rect = anchor.getBoundingClientRect();
+        const rect = getAnchorRect(anchor);
 
         gsap.set(icon, {
           x: rect.left - parentRect.left - 2,
@@ -433,8 +541,8 @@ export default function useLineAnimation({ refs }) {
     const icons1 = ["#iconStar1", "#iconStar2", "#iconStar3", "#iconStar4"];
 
     function getRelativePosition(target, parent) {
-      const t = target.getBoundingClientRect();
-      const p = parent.getBoundingClientRect();
+      const t = getAnchorRect(target);
+      const p = getAnchorRect(parent);
 
       return {
         x: t.left - p.left,
@@ -767,9 +875,9 @@ export default function useLineAnimation({ refs }) {
     const travelAnchors = ["#anchor5", "#anchor8", "#anchorMergePath"];
 
     function getCenteredPosition(target, mover, parent) {
-      const t = target.getBoundingClientRect();
-      const m = mover.getBoundingClientRect();
-      const p = parent.getBoundingClientRect();
+      const t = getAnchorRect(target);
+      const m = getAnchorRect(mover);
+      const p = getAnchorRect(parent);
 
       return {
         x: t.left - p.left + t.width / 2 - m.width / 2,
@@ -948,7 +1056,7 @@ export default function useLineAnimation({ refs }) {
     }
 
     function getScopePos(el) {
-      const r = el.getBoundingClientRect();
+      const r = getAnchorRect(el);
       const p = scope.getBoundingClientRect();
 
       return {
@@ -1050,8 +1158,8 @@ export default function useLineAnimation({ refs }) {
     let splitCenter = { x: 0, y: 0 };
 
     function getVisualCenter(target, parent) {
-      const t = target.getBoundingClientRect();
-      const p = parent.getBoundingClientRect();
+      const t = getAnchorRect(target);
+      const p = getAnchorRect(parent);
 
       return {
         x: t.left - p.left + t.width / 2,
