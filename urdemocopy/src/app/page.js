@@ -4,6 +4,7 @@ import Nav_Component from "./coinbarter/page";
 // import LiquidGlass from "./try/glass";
 import Popup from "./popup/popup";
 import ClearGlassButton from "./clearsglass";
+import GlassSurfaceDemo from "./clearsglass/GlassSurfaceDemo";
 // import CloudBackground from "./bg/cloudBg";
 
 const Page = () => {
@@ -12,7 +13,7 @@ const Page = () => {
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-black">
       <video
-        // autoPlay
+        autoPlay
         loop
         muted
         playsInline
@@ -50,17 +51,24 @@ const Page = () => {
         </div>
       )}
 
-      {/* Fixed Clear Glass Button */}
+      {/* Fixed Official React Bits Glass Surface Demo (Mount for live preview & comparison) */}
       <div
         style={{
           position: "fixed",
-          bottom: "24px",
+          bottom: "64px",
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 40,
         }}
       >
-        <ClearGlassButton />
+        <GlassSurfaceDemo
+          width={220}
+          height={48}
+          borderRadius={17}
+          label="Glass Surface"
+        />
+        {/* Previous version kept intact for direct comparison: */}
+        {/* <ClearGlassButton /> */}
       </div>
 
       {/* Scrollable Content Layer (z-10) */}
