@@ -1,0 +1,474 @@
+/* ==========================================================================
+   Apple-Inspired Liquid Glass Button (Clear Glass)
+   - Border radius: Exactly 17px
+   - True optical transparency with refractive backdrop blur
+   - Curved specular environmental reflections
+   - Edge refraction illusion & bevel specular highlights
+   - Full cross-browser support with graceful fallbacks
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Root Variables & Default Config
+   -------------------------------------------------------------------------- */
+.clearGlassButton {
+  --cgb-radius: 17px;
+  --cgb-text-color: #ffffff;
+  --cgb-text-shadow: 0 1px 2.5px rgba(0, 0, 0, 0.35);
+  --cgb-bg-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  --cgb-border-color: rgba(255, 255, 255, 0.32);
+  --cgb-specular-top: rgba(255, 255, 255, 0.85);
+  --cgb-specular-mid: rgba(255, 255, 255, 0.22);
+  --cgb-edge-shade: rgba(0, 0, 0, 0.16);
+  --cgb-outer-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.18),
+                      0 3px 8px -2px rgba(0, 0, 0, 0.12);
+  --cgb-focus-ring: #0071e3;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--cgb-radius);
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  overflow: hidden; /* Cleanly bounds the optical refraction layers to exactly 17px */
+  isolation: isolate;
+  text-decoration: none;
+  box-sizing: border-box;
+  vertical-align: middle;
+  transform: translateZ(0); /* Hardware accelerated compositing */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Typography: Apple SF Pro styling */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+               var(--font-inter, "Inter"), var(--font-sans, "Geist"),
+               system-ui, -apple-system, sans-serif;
+  font-weight: 510;
+  letter-spacing: -0.015em;
+  color: var(--cgb-text-color);
+
+  /* Apple fluid spring motion */
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease,
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Size Variants (All strictly maintain 17px border radius)
+   -------------------------------------------------------------------------- */
+.sizeSm {
+  padding: 8px 18px;
+  font-size: 13px;
+  min-height: 36px;
+  gap: 6px;
+}
+
+.sizeMd {
+  padding: 12px 26px;
+  font-size: 15px;
+  min-height: 44px;
+  gap: 8px;
+}
+
+.sizeLg {
+  padding: 15px 34px;
+  font-size: 17px;
+  min-height: 52px;
+  gap: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   Layer 1: Backdrop Prism Filter & Light Transmission Base
+   -------------------------------------------------------------------------- */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--cgb-radius);
+  pointer-events: none;
+  z-index: 1;
+
+  /* Base optical transmission fill: pure crystal transparency */
+  background: var(--cgb-bg-gradient);
+
+  /* Optical Glass Refraction:
+     - 20px blur for realistic optical dispersion
+     - 185% saturation brings vibrant background colors alive through the lens
+     - 105% brightness concentrates ambient photons like a convex glass slab
+     - 102% contrast maintains crisp separation of background textures
+  */
+  -webkit-backdrop-filter: blur(20px) saturate(185%) brightness(105%) contrast(102%);
+  backdrop-filter: blur(20px) saturate(185%) brightness(105%) contrast(102%);
+
+  /* Ambient contact shadow */
+  box-shadow: var(--cgb-outer-shadow);
+
+  transition: background 0.25s ease,
+              -webkit-backdrop-filter 0.25s ease,
+              backdrop-filter 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Layer 2: Edge Refraction Illusion & Inset Bevel Highlights
+   -------------------------------------------------------------------------- */
+.edgeRefraction {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--cgb-radius);
+  pointer-events: none;
+  z-index: 2;
+
+  /* Specular boundary hairline */
+  border: 1px solid var(--cgb-border-color);
+
+  /* Multi-frequency optical bevel refraction:
+     1. Hairline specular rim: Razor-sharp highlight along upper glass edge
+     2. Secondary bevel diffusion: Soft light spreading down the top slope
+     3. Bottom edge grounding: Restrained ambient occlusion at bottom rim
+     4. Lateral micro-refraction: Subtle edge luminance on left and right sides
+  */
+  box-shadow:
+    inset 0 1px 1px 0 var(--cgb-specular-top),
+    inset 0 2px 5px 0 var(--cgb-specular-mid),
+    inset 0 -1.5px 3px 0 var(--cgb-edge-shade),
+    inset 1px 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset -1px 0 2px 0 rgba(255, 255, 255, 0.15);
+
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Layer 3: Curved Specular Overhead Environmental Reflection
+   Simulates light reflecting across the polished convex surface of the button
+   -------------------------------------------------------------------------- */
+.specularReflection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58%;
+  border-radius: 17px 17px 55% 55% / 17px 17px 20% 20%;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.75;
+
+  /* Curved studio sky/softbox reflection */
+  background: radial-gradient(
+    ellipse 120% 100% at 50% -20%,
+    rgba(255, 255, 255, 0.48) 0%,
+    rgba(255, 255, 255, 0.16) 42%,
+    rgba(255, 255, 255, 0) 78%
+  );
+
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Layer 4: Surface Sheen & Prismatic Luster
+   Adds subtle 3D physical volume and diagonal gloss
+   -------------------------------------------------------------------------- */
+.surfaceSheen {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--cgb-radius);
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.35;
+
+  /* Delicate diagonal light sheen */
+  background: linear-gradient(
+    118deg,
+    transparent 15%,
+    rgba(255, 255, 255, 0.03) 30%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.04) 62%,
+    transparent 80%
+  );
+
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s ease, transform 0.35s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Layer 5: Content Layer (Text and Icons)
+   Preserves razor-sharp contrast and accessibility across all backgrounds
+   -------------------------------------------------------------------------- */
+.content {
+  position: relative;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: inherit;
+  pointer-events: none;
+  text-shadow: var(--cgb-text-shadow);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.2s ease,
+              text-shadow 0.2s ease;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.label {
+  display: inline-block;
+  line-height: 1.25;
+}
+
+/* --------------------------------------------------------------------------
+   Interactive States: Hover
+   Slightly enhanced reflection and depth without exaggerated glow
+   -------------------------------------------------------------------------- */
+.clearGlassButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.clearGlassButton:hover:not(:disabled) .backdrop {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  -webkit-backdrop-filter: blur(22px) saturate(195%) brightness(108%) contrast(102%);
+  backdrop-filter: blur(22px) saturate(195%) brightness(108%) contrast(102%);
+  box-shadow:
+    0 14px 30px -4px rgba(0, 0, 0, 0.22),
+    0 4px 12px -2px rgba(0, 0, 0, 0.14);
+}
+
+.clearGlassButton:hover:not(:disabled) .edgeRefraction {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95),
+    inset 0 2px 6px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1.5px 3px 0 var(--cgb-edge-shade),
+    inset 1px 0 2px 0 rgba(255, 255, 255, 0.22),
+    inset -1px 0 2px 0 rgba(255, 255, 255, 0.22);
+}
+
+.clearGlassButton:hover:not(:disabled) .specularReflection {
+  opacity: 0.92;
+  transform: scaleY(1.03);
+}
+
+.clearGlassButton:hover:not(:disabled) .surfaceSheen {
+  opacity: 0.65;
+  transform: translateX(4px);
+}
+
+/* --------------------------------------------------------------------------
+   Interactive States: Active (Pressed)
+   Physical glass depression with subtle compression of highlight & shadow
+   -------------------------------------------------------------------------- */
+.clearGlassButton:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: 0.08s;
+}
+
+.clearGlassButton:active:not(:disabled) .backdrop {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.02) 45%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  box-shadow:
+    0 4px 10px -2px rgba(0, 0, 0, 0.16),
+    0 2px 4px -1px rgba(0, 0, 0, 0.10);
+}
+
+.clearGlassButton:active:not(:disabled) .specularReflection {
+  opacity: 0.55;
+  transform: translateY(1px) scaleY(0.95);
+}
+
+.clearGlassButton:active:not(:disabled) .edgeRefraction {
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.70),
+    inset 0 1.5px 3px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 2px 0 var(--cgb-edge-shade);
+}
+
+/* --------------------------------------------------------------------------
+   Interactive States: Keyboard Focus Visible
+   High-contrast, clean Apple system focus ring cleanly offset
+   -------------------------------------------------------------------------- */
+.clearGlassButton:focus-visible {
+  outline: 2px solid var(--cgb-focus-ring);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Interactive States: Disabled
+   Visually distinguishable, desaturated, non-interactive
+   -------------------------------------------------------------------------- */
+.clearGlassButton:disabled,
+.clearGlassButton[aria-disabled="true"] {
+  opacity: 0.42;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(45%);
+  box-shadow: none;
+}
+
+.clearGlassButton:disabled .backdrop,
+.clearGlassButton[aria-disabled="true"] .backdrop {
+  box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   Background-Adaptive Theme Variants
+   -------------------------------------------------------------------------- */
+
+/* Light Theme (For pure white & bright pastel backgrounds) */
+.themeLight {
+  --cgb-text-color: #0f172a;
+  --cgb-text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  --cgb-bg-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(255, 255, 255, 0.50) 100%
+  );
+  --cgb-border-color: rgba(0, 0, 0, 0.12);
+  --cgb-specular-top: rgba(255, 255, 255, 0.95);
+  --cgb-specular-mid: rgba(255, 255, 255, 0.50);
+  --cgb-edge-shade: rgba(0, 0, 0, 0.09);
+  --cgb-outer-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08),
+                      0 2px 6px -1px rgba(0, 0, 0, 0.04);
+}
+
+.themeLight .backdrop {
+  -webkit-backdrop-filter: blur(20px) saturate(170%) brightness(101%) contrast(100%);
+  backdrop-filter: blur(20px) saturate(170%) brightness(101%) contrast(100%);
+}
+
+.themeLight .specularReflection {
+  background: radial-gradient(
+    ellipse 120% 100% at 50% -20%,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.25) 42%,
+    rgba(255, 255, 255, 0) 78%
+  );
+}
+
+.themeLight:hover:not(:disabled) .backdrop {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.45) 45%,
+    rgba(255, 255, 255, 0.60) 100%
+  );
+  box-shadow:
+    0 12px 24px -4px rgba(0, 0, 0, 0.12),
+    0 3px 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+.themeLight:hover:not(:disabled) .edgeRefraction {
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow:
+    inset 0 1px 1.5px 0 #ffffff,
+    inset 0 2px 6px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -1.5px 3px 0 rgba(0, 0, 0, 0.09);
+}
+
+/* Dark Theme (Optimized for deep blacks, midnight, & photographic scenes) */
+.themeDark {
+  --cgb-text-color: #ffffff;
+  --cgb-text-shadow: 0 1px 2.5px rgba(0, 0, 0, 0.5);
+  --cgb-bg-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.02) 45%,
+    rgba(255, 255, 255, 0.07) 100%
+  );
+  --cgb-border-color: rgba(255, 255, 255, 0.28);
+  --cgb-specular-top: rgba(255, 255, 255, 0.85);
+  --cgb-specular-mid: rgba(255, 255, 255, 0.20);
+  --cgb-edge-shade: rgba(0, 0, 0, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Cross-Browser Graceful Fallback
+   When backdrop-filter is unsupported or disabled
+   -------------------------------------------------------------------------- */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .backdrop {
+    background: rgba(30, 34, 46, 0.82) !important;
+  }
+
+  .themeLight .backdrop {
+    background: rgba(245, 246, 250, 0.92) !important;
+    border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  }
+
+  .clearGlassButton:hover:not(:disabled) .backdrop {
+    background: rgba(40, 45, 60, 0.88) !important;
+  }
+
+  .themeLight:hover:not(:disabled) .backdrop {
+    background: rgba(255, 255, 255, 0.96) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility: Prefers-Reduced-Motion
+   Immediately eliminates all transforms and transitions
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .clearGlassButton,
+  .backdrop,
+  .edgeRefraction,
+  .specularReflection,
+  .surfaceSheen,
+  .content {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .clearGlassButton:hover:not(:disabled),
+  .clearGlassButton:active:not(:disabled) {
+    transform: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility: Windows High Contrast Mode (forced-colors)
+   -------------------------------------------------------------------------- */
+@media (forced-colors: active) {
+  .clearGlassButton {
+    border: 2px solid ButtonBorder !important;
+    color: ButtonText !important;
+  }
+
+  .edgeRefraction,
+  .specularReflection,
+  .surfaceSheen {
+    display: none !important;
+  }
+
+  .backdrop {
+    background: ButtonFace !important;
+  }
+
+  .clearGlassButton:focus-visible {
+    outline: 3px solid Highlight !important;
+  }
+}
+

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Nav_Component from "./coinbarter/page";
 // import LiquidGlass from "./try/glass";
 import Popup from "./popup/popup";
+import ClearGlassButton from "./clearsglass";
 // import CloudBackground from "./bg/cloudBg";
 
 const Page = () => {
@@ -49,8 +50,21 @@ const Page = () => {
         </div>
       )}
 
+      {/* Fixed Clear Glass Button */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "24px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 40,
+        }}
+      >
+        <ClearGlassButton />
+      </div>
+
       {/* Scrollable Content Layer (z-10) */}
-      <div className="relative z-10 h-full w-full hidden overflow-y-auto scroll-smooth">
+      <div className="relative z-10 h-full w-full overflow-y-auto scroll-smooth">
         {/* Section 1 */}
         <section className="flex h-dvh flex-col items-center justify-center px-5 text-center">
           <div className="max-w-3xl">
