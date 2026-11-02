@@ -54,7 +54,7 @@ function LoginForm() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "admin@parcelflow.com",
-      password: "courierdemo2025",
+      password: "courierdemo2026",
       rememberMe: true,
     },
   });
@@ -81,7 +81,7 @@ function LoginForm() {
 
   const fillDemoCredentials = () => {
     setValue("username", "admin@parcelflow.com");
-    setValue("password", "courierdemo2025");
+    setValue("password", "courierdemo2026");
     setErrorMessage("");
   };
 
@@ -242,7 +242,7 @@ function LoginForm() {
                   User: <span className="text-white">admin@parcelflow.com</span>
                 </p>
                 <p>
-                  Pass: <span className="text-white">courierdemo2025</span>
+                  Pass: <span className="text-white">courierdemo2026</span>
                 </p>
               </div>
             </div>

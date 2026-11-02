@@ -39,7 +39,7 @@ export function AppLayout({ children }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-blue-100 selection:text-blue-900">
+    <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-900 antialiased selection:bg-blue-100 selection:text-blue-900">
       {/* Sidebar Navigation */}
       <Sidebar
         isCollapsed={isCollapsed}
@@ -49,7 +49,7 @@ export function AppLayout({ children }) {
       />
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col min-w-0 overflow-x-hidden">
+      <div className="flex flex-1 flex-col min-w-0 h-full overflow-hidden">
         {/* Top Header */}
         <Header
           setIsMobileOpen={setIsMobileOpen}
@@ -57,8 +57,10 @@ export function AppLayout({ children }) {
         />
 
         {/* Dynamic Route Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-          {children}
+        <main className="flex-1 overflow-y-auto min-h-0 p-4 sm:p-6 lg:p-8">
+          <div className="max-w-7xl w-full mx-auto">
+            {children}
+          </div>
         </main>
       </div>
 
