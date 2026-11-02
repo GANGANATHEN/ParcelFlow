@@ -16,6 +16,8 @@ export function ParcelLabelPreview({ parcel, highlightField = null, showOcrBoxes
     );
   }
 
+  // demo
+
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 0.15, 1.6));
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 0.15, 0.7));
   const handleRotate = () => setRotation((prev) => (prev + 90) % 360);
